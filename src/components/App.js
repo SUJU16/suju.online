@@ -5,17 +5,16 @@ import logo from '../assets/logo.png'
 import '../styles/App.scss'
 
 import Main from './Main'
-
-const dummy1 = () => <div><h2>dummy 1</h2></div>
-const dummy2 = () => <div><h2>dummy 2</h2></div>
+import MapPage from './Map'
+import SettingsPage from './Settings'
 
 class App extends React.Component {
   render() {
     return (
       <Router history={browserHistory}>
         <Route path="/" component={Main}>
-          <Route path="one" component={dummy1}/>
-          <Route path="two" component={dummy2}/>
+          <Route path="map" component={MapPage}/>
+          <Route path="settings" component={SettingsPage}/>
         </Route>
       </Router>
     )
