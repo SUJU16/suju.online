@@ -2,6 +2,7 @@ import express from 'express'
 import db from './database'
 import bodyParser from 'body-parser'
 import jsonHelper from './utils/jsonHelper'
+import clusters from './utils/clusters.js'
 
 const app = express()
 
@@ -41,6 +42,16 @@ app
     res.status(500).json({err: error})
   })
 })
+.get('/sum/:a/:b', (req, res) => {
+  clusters.sum(req.params.a, req.params.b)
+  .then( (response) => {
+    console.log(response)
+    res.json(response)
+  })
+  .catch( (error) => {
+    res.status(500).json({err: error})
+  })
+})
 .post('/request', (req, res) => {
   db.postRequest(req.body)
   .then( (response) => {
@@ -48,6 +59,21 @@ app
   })
   .catch( (error) => {
     res.status(500).json({err: error})
+  })
+})
+.get('/clusters', (req, res) => {
+  db.getData()
+  .then( (json) => {
+    clusters.calculate(json)
+    .then( (response) => {
+      res.json(response)
+    })
+    .catch( (error) => {
+      res.status(500).json({err: error})
+    })
+  })
+  .catch( (error) => {
+    req.status(500).json({err: error})
   })
 })
 .listen(5000, () => console.log('server running on 5000'))
