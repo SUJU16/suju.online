@@ -1,0 +1,22 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "HELLO JUNCTION",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SUJU16/dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SUJU16/dashboard/issues"
+  },
+  "homepage": "https://github.com/SUJU16/dashboard#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
