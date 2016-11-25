@@ -20,5 +20,14 @@ module.exports = {
         resolve(result)
       })
     })
+  },
+
+  removeData() {
+    return new Promise( (resolve, reject) => {
+      db.requests.destroy({}, (err, result) => {
+        if (err) reject(err)
+        resolve(result)
+      })
+    })
   }
 }
