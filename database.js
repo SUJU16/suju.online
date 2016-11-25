@@ -11,5 +11,14 @@ module.exports = {
         resolve(result)
       })
     })
+  },
+
+  postRequest(data) {
+    return new Promise( (resolve, reject) => {
+      db.requests.save(data, (err, result) => {
+        if (err) reject(err)
+        resolve(result)
+      })
+    })
   }
 }
