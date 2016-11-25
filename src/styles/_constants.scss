@@ -1,0 +1,12 @@
+$break-small: 767px;
+$break-large: 768px;
+
+// main colors
+$blueblack: #282e32;
+$bluewhite: #cddde6;
+
+// context specific colors
+$background: $blueblack;
+$dark_border: lighten($blueblack, 4);
+
+$light_text: $bluewhite;

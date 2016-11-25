@@ -1,0 +1,13 @@
+@import '_constants';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+
+  @media (max-width: $break-small) {
+    flex-direction: column-reverse;
+  }
+}
