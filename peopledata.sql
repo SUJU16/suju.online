@@ -37,7 +37,7 @@ CREATE TABLE requests (
     id integer NOT NULL,
     latitude double precision,
     longitude double precision,
-    date date
+    date bigint
 );
 
 
@@ -83,7 +83,7 @@ COPY requests (id, latitude, longitude, date) FROM stdin;
 -- Name: requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('requests_id_seq', 1, false);
+SELECT pg_catalog.setval('requests_id_seq', 120, true);
 
 
 --
@@ -112,6 +112,16 @@ REVOKE ALL ON TABLE requests FROM PUBLIC;
 REVOKE ALL ON TABLE requests FROM postgres;
 GRANT ALL ON TABLE requests TO postgres;
 GRANT ALL ON TABLE requests TO postgresuser;
+
+
+--
+-- Name: requests_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE requests_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE requests_id_seq FROM postgres;
+GRANT ALL ON SEQUENCE requests_id_seq TO postgres;
+GRANT ALL ON SEQUENCE requests_id_seq TO postgresuser;
 
 
 --
