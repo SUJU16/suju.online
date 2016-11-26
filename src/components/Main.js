@@ -15,9 +15,6 @@ class Main extends React.Component {
     super()
   }
   componentDidMount() {
-    // navigator.geolocation.getCurrentPosition(pos => {
-    //   this.props.saveLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude})
-    // })
     this.props.loadData()
     window.addEventListener('hashchange', () => {
       this.props.setActive(window.location.hash.substr(1).replace('/', ''))

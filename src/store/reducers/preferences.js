@@ -3,7 +3,8 @@ const preferences = (state = {
   zoomLevel: 14,
   layers: {
     'people': false,
-    'clusters': false
+    'clusters': false,
+    'user': false
   },
   activeApp: 'map'
 }, action) => {

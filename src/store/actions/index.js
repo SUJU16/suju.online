@@ -50,6 +50,15 @@ export function loadAllDataPoints() {
   }
 }
 
+export function getLocation() {
+  return dispatch => {
+    console.log('get location')
+    navigator.geolocation.getCurrentPosition(pos => {
+      dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}))
+    })
+  }
+}
+
 const uploadSuccess = (res) => ({
   type: 'UPLOAD_SUCCESS',
   res

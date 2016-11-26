@@ -15,9 +15,16 @@
   flex: 1;
 }
 
+.middle {
+  top: 50vh;
+}
+
+.bottom {
+  bottom: 5vh;
+}
+
 .sidebar {
   position: absolute;
-  top: 50vh;
   z-index: 999;
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
