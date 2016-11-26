@@ -1,9 +1,16 @@
-module.exports = (() => new (class {
+module.exports = () => new (class {
     constructor() {
     }
 
-    getColor(id) {
-        return this.HSBtoRGB(this.random(id), 1.0, 0.7)
+    getColorString(id, s, b) {
+        let c = this.getColor(id, s, b);
+        return 'rgb('+c.r+','+c.g+','+c.b+')';
+    }
+
+    getColor(id, s, b) {
+        if (s === undefined) s = 1.0;
+        if (b === undefined) b = 0.7;
+        return this.HSBtoRGB(this.random(id), 1.0, 0.7);
     }
 
     HSBtoRGB(h, s, b) {
@@ -13,7 +20,7 @@ module.exports = (() => new (class {
         var q = b * (1 - f * s);
         var t = b * (1 - (1 - f) * s);
 
-    switch(i % 6) {
+        switch(i % 6) {
             case 0: return this.round({r: b, g: t, b: p});
             case 1: return this.round({r: q, g: b, b: p});
             case 2: return this.round({r: p, g: b, b: t});
@@ -35,5 +42,4 @@ module.exports = (() => new (class {
         let x = Math.sin(seed) * 10000;
         return x - Math.floor(x);
     }
-}))
-
+})
