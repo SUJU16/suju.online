@@ -36,17 +36,18 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
       })
     }
     if (clustered_datapoints) {
-      clustered_datapoints.map(points => {
-        elems.push(<Circle key={point.id} center={{ lat: points.latitude, lon: points.longitude }} color={getColor(points.id)} radius={20} weight={1} opacity={0.5}/>)
+      clustered_datapoints.map(point => {
+        elems.push(<Circle key={point.id} center={{ lat: point.latitude, lon: point.longitude }} color={getColor(point.cluster_id)} radius={20} weight={1} opacity={0.5}/>)
       })
     }
-    return elems.join('')
+    console.log(elems)
+    return elems
   } else {
     return null
   }
 }
 
-const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
+const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -77,7 +78,7 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
             }
             return (<Circle key={point.id} center={coords} color={clustersEnabled ? getColor(point.cluster_id) : '#2366b4'} weight={0.5} radius={20} fillOpacity={1} />)
           }) : null}
-          renderClusters(clusters, clustersEnabled)
+          {renderClusters(clusters, clustered_datapoints, clustersEnabled)}
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
