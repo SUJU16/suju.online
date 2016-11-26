@@ -1,12 +1,19 @@
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
 
-var nextClusterId = 0
+import clusters from './clusters'
+import { readRoute } from '../../utils'
+
+var nextRouteId = 0
 
 export const addCluster = (data) => ({
   type: 'ADD_CLUSTER',
-  id: nextClusterId++,
-  ...data
+  data
+})
+
+export const addClusteredDataPoint = (data) => ({
+  type: 'ADD_CLUSTERED_DATAPOINT',
+  data
 })
 
 export const setLocation = (location) => ({
@@ -24,6 +31,14 @@ export const toggleLayer = (layerId) => ({
   layerId
 })
 
+export const addRoute = (route) => ({
+  type: 'ADD_ROUTE',
+  route: {
+    id: nextRouteId++,
+    positions: route
+  }
+})
+
 export const setCenter = (e) => ({
   type: 'SET_CENTER',
   point: e.target._lastCenter
@@ -38,6 +53,21 @@ const fetchData = (url) => {
   return fetch(url)
   .then(res => res.json())
 }
+
+const uploadSuccess = (res) => ({
+  type: 'UPLOAD_SUCCESS',
+  res
+})
+
+const uploadFailure = (err) => ({
+  type: 'UPLOAD_FAILURE',
+  err
+})
+
+export const setActiveApp = (id) => ({
+  type: 'SET_ACTIVE_APP',
+  id
+})
 
 export function loadAllDataPoints() {
   return dispatch => {
@@ -60,22 +90,10 @@ export function getLocation() {
   }
 }
 
-const uploadSuccess = (res) => ({
-  type: 'UPLOAD_SUCCESS',
-  res
-})
-
-const uploadFailure = (err) => ({
-  type: 'UPLOAD_FAILURE',
-  err
-})
-
 export function uploadPoint(e) {
   return dispatch => {
-    console.log('addpoint')
     const { lat: latitude, lng: longitude } = e.latlng
     const json = JSON.stringify({latitude, longitude, date: moment().unix()})
-    console.log(json)
     fetch(
       'http://localhost:5000/api/database', {
         method: 'POST',
@@ -87,29 +105,34 @@ export function uploadPoint(e) {
     )
     .then(res => res.json())
     .then(res => {
-      console.log(res)
       dispatch(addDataPoint(res))
     })
     .catch(err => {
-      console.log(err)
       dispatch(uploadFailure(err))
     })
   }
 }
 
-export const setActiveApp = (id) => ({
-  type: 'SET_ACTIVE_APP',
-  id
-})
-
-const clusters = [{"date":1480212288.2844827,"location":{"latitude":60.16589716928018,"longitude":24.96703888435517},"n_points":232},{"date":1480145515,"location":{"latitude":60.159659990600005,"longitude":24.977102631833333},"n_points":3},{"date":1480076600.7142856,"location":{"latitude":60.169792791528565,"longitude":24.968448538942855},"n_points":7},{"date":1480053972.142857,"location":{"latitude":60.162377432128565,"longitude":24.961673325457138},"n_points":7}]
+export function loadAllRoutes() {
+  return dispatch => {
+    fetchData('http://localhost:5000/api/cluster/splines')
+    .then(routes => {
+      for (let i in routes) {
+        dispatch(addRoute(readRoute(routes[i])))
+      }
+    })
+  }
+}
 
 export function loadAllClusters() {
   return dispatch => {
     fetchData('http://localhost:5000/api/cluster')
-    .then(clusters => {
-      for (var i in clusters) {
-        dispatch(addCluster(clusters[i]))
+    .then(json => {
+      for (var i in json.clusters) {
+        dispatch(addCluster(json.clusters[i]))
+      }
+      for (var i in json.points) {
+        dispatch(addClusteredDataPoint(json.points[i]))
       }
     })
   }
