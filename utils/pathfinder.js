@@ -1,5 +1,4 @@
 import {spawn} from 'child_process'
-import polyline from 'polyline'
 import fetch from 'isomorphic-fetch'
 
 module.exports = {
@@ -23,7 +22,6 @@ module.exports = {
   },
 
   getSpline(a, b) {
-    console.log('getSplines')
     const url = `https://data.embers.city/api/routing?start_point=${a.location.latitude},${a.location.longitude}&end_point=${a.location.latitude},${a.location.longitude}&is_sorted=true&is_do_instructions=true`
     const options = {
       method: 'GET',
@@ -31,10 +29,14 @@ module.exports = {
         'Authorization': 'Token ' + process.env.EMBERSTOKEN
       }
     }
-    console.log('fetch url: ', url)
-    console.log('options: ', options)
-    return fetch(url, options)
-    //.then( (resp) => console.log(resp))
-    //.catch( (error) => console.log(error))
+    return new Promise( (resolve, reject) => {
+      fetch(url, options)
+      .then( (reqData) => {
+        reqData.json()
+        .then( (data) => resolve(data))
+        .catch( (error) => reject(error))
+      })
+      .catch( (error) => reject(error))
+    })
   }
 }
