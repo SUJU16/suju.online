@@ -116,7 +116,7 @@ export function uploadPoint(e) {
 export function loadAllRoutes() {
   return dispatch => {
     fetchData('http://localhost:5000/api/cluster/splines')
-    .then(json => {
+    .then(routes => {
       for (let i in routes) {
         dispatch(addRoute(routes[i]))
       }
