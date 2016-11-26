@@ -15,9 +15,26 @@
   flex: 1;
 }
 
+.middle {
+  @media(max-width: $break-small) {
+    bottom: 14rem;
+  }
+  @media(min-width: $break-large) {
+    top: 50vh;
+  }
+}
+
+.bottom {
+  @media(max-width: $break-small) {
+    bottom: 10rem;
+  }
+  @media(min-width: $break-large) {
+    bottom: 5vh;
+  }
+}
+
 .sidebar {
   position: absolute;
-  top: 50vh;
   z-index: 999;
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
