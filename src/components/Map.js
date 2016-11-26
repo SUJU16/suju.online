@@ -12,9 +12,9 @@ import { Map, TileLayer, LayerGroup, Circle, Polyline } from 'react-leaflet';
 
 var colors = {}
 
-const getColor = (id) => {
-  if (!colors[id]) {
-    colors[id] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+const getColor = (id, size = undefined, ) => {
+  if (!colors[id] && size) {
+    colors[id] = `rgb(${Math.floor(size)}, ${Math.floor(0)}, ${Math.floor(255 - size)})`
   }
   return colors[id]
 }
@@ -54,13 +54,13 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
               lat: point.latitude,
               lon: point.longitude
             }
-            return (<Circle key={point.id} center={coords} color={getColor(point.id)} radius={point.radius} />)
+            return (<Circle key={point.id} center={coords} color={getColor(point.id, point.radius)} radius={point.radius} weight={1} opacity={0.5}/> )
           }) : null}
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
           { currentRoute ? (
-            <Polyline positions={currentRoute} color={'#6ccaf2'} weight={4} smoothFactor={1} />
+            <Polyline positions={currentRoute} color={'#216ec8'} weight={2} smoothFactor={1} />
           ) : null}
         </LayerGroup>
       </Map>
