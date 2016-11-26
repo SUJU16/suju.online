@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
+
 import clusters from './clusters'
 import { readRoutes } from '../../utils'
 
@@ -52,13 +53,12 @@ const fetchData = (url) => {
 
 export function loadAllDataPoints() {
   return dispatch => {
-    // fetchData('http://localhost:5000/api/database')
-    // .then(list => {
-    const list = clusters.points
+    fetchData('http://localhost:5000/api/database')
+    .then(list => {
       for (var i in list) {
         dispatch(addDataPoint(list[i]))
       }
-    // })
+    })
   }
 }
 
@@ -121,11 +121,10 @@ export const setActiveApp = (id) => ({
 
 export function loadAllClusters() {
   return dispatch => {
-    // fetchData('http://localhost:5000/api/cluster')
-    // .then(clusters => {
-      for (var i in clusters.clusters) {
-        dispatch(addCluster(clusters.clusters[i]))
+    fetchData('http://localhost:5000/api/cluster')
+    .then(clusters => {
+      for (var i in clusters) {
+        dispatch(addCluster(clusters[i]))
       }
-    // })
   }
 }
