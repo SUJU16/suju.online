@@ -1,48 +1,41 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { setLocation } from '../store/actions'
 
 import Page from './Page'
 import style from '../styles/Map.scss'
 
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
-class MapContainer extends React.Component {
-  constructor() {
-    super()
-    this.state = {position: undefined, zoom: 10}
-  }
-  componentDidMount() {
-    console.log('didmount')
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.setState(
-        {
-          position: {
-            lat: pos.coords.latitude,
-            lon: pos.coords.longitude
-          }
-        }
-      )
-      console.log(this.state.position)
-    })
-  }
-  render() {
-    return (
-      <div className={style.container}>
-        {this.state.position ?
-          <Map className={style.map} center={this.state.position} zoom={this.state.zoom}>
-            <TileLayer
-              className={style.tileLayer}
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-              />
-          </Map>
-          : 'Loading'}
-      </div>
-    )
-  }
+const LeafLet = (location) => {
+  return (
+    <Map className={style.map} center={location} zoom={11}>
+      <TileLayer
+        className={style.tileLayer}
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url='http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+        />
+    </Map>
+  )
 }
 
-const MapPage = () => (
-  <MapContainer />
+const MapView = ({ location, setLocation }) => (
+  <div className={style.container}>
+  {location ?
+    LeafLet(location)
+    : 'Loading location'}
+  </div>
 )
 
-export default MapPage
+const mapStateToProps = (state) => ({
+  location: state.preferences.location
+})
+
+const mapDispatchToProps = ({
+  setLocation
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MapView)

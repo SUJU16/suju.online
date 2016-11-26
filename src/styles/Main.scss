@@ -14,12 +14,25 @@
 
 .navigator {
   z-index: 100;
-  background-color: $bluewhite;
+  background-color: lighten($background, 4);
+  border-top: 2px solid lighten($background, 8);
   display: flex;
   justify-content: center;
   height: 4rem;
 }
 
 .link {
-  padding: 2rem;
+  color: white;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: lighter;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2rem;
+
+  span {
+    margin-top: 4px;
+  }
 }
