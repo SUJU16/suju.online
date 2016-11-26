@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
 
-import clusters from './clusters'
 import { readRoute } from '../../utils'
 
 var nextRouteId = 0
@@ -31,11 +30,17 @@ export const toggleLayer = (layerId) => ({
   layerId
 })
 
+export const toggleRoute = (id) => ({
+  type: 'TOGGLE_ROUTE',
+  id
+})
+
 export const addRoute = (route) => ({
   type: 'ADD_ROUTE',
   route: {
     id: nextRouteId++,
-    positions: route
+    positions: route,
+    visible: true
   }
 })
 
@@ -82,7 +87,6 @@ export function loadAllDataPoints() {
 
 export function getLocation() {
   return dispatch => {
-    console.log('get location')
     navigator.geolocation.watchPosition(pos => {
       dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}),
       { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true })

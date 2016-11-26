@@ -24,6 +24,18 @@
   }
 }
 
+.middleRight {
+  right: 16rem;
+
+  @media(max-width: $break-small) {
+    bottom: 14rem;
+  }
+  @media(min-width: $break-large) {
+    top: 50vh;
+  }
+}
+
+
 .bottom {
   @media(max-width: $break-small) {
     bottom: 10rem;

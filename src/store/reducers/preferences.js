@@ -32,6 +32,16 @@ const preferences = (state = {
           action.route
         ]
       }
+    case 'TOGGLE_ROUTE':
+      return {
+        ...state,
+        routes: state.routes.map(route => {
+          return {
+            ...route,
+            visible: (route.id === action.id) ? !route.visible : route.visible
+          }
+        })
+      }
     case 'SET_ZOOM':
       return {
         ...state,

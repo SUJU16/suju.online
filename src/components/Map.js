@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setLocation, setZoomLevel, toggleLayer, uploadPoint, getLocation } from '../store/actions'
+import { setLocation, setZoomLevel, toggleLayer, toggleRoute, uploadPoint, getLocation } from '../store/actions'
 import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
@@ -40,20 +40,27 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
         elems.push(<Circle key={point.id} center={{ lat: point.latitude, lon: point.longitude }} color={getColor(point.cluster_id)} radius={20} weight={1} opacity={0.5}/>)
       })
     }
-    console.log(elems)
     return elems
   } else {
     return null
   }
 }
 
-const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
+const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button disabled={!datapoints} className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
       <button disabled={!clusters} className={clustersEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "clusters")}><ClusterIcon size={24}/></button>
       <button disabled={!routes} className={routesEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "routes")}><BusIcon size={24}/></button>
     </div>
+    { routes ?
+      <div className={style.sidebar}>
+          { routes.map(route => {
+            return (<button onClick={toggleRoute.bind(this, route.id)} key={route.id}>{ route.id }</button>)
+          }) }
+      </div>
+      : ''
+    }
     <div className={style.sidebar + ' ' + style.bottom}>
       <button onClick={getAndSetLocation}>
         <NavIcon size={24} />
@@ -83,7 +90,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
           { routes && routesEnabled ? routes.map(route => {
-            if (route.id) {
+            if (route.id && route.visible) {
               return (<Polyline positions={route.positions} key={route.id} color={getRandomColor(route.id)} weight={2} smoothFactor={1} />)
             }
           }) : null}
@@ -111,6 +118,7 @@ const mapDispatchToProps = (dispatch) => {
     setLocation: (location) => dispatch(setLocation(location)),
     setZoomLevel: (zoomLevel) => dispatch(setZoomLevel(zoomLevel)),
     toggleLayer: (id) => dispatch(toggleLayer(id)),
+    toggleRoute: (id) => dispatch(toggleRoute(id)),
     newPoint: (e) => dispatch(uploadPoint(e)),
     getAndSetLocation: () => {
       dispatch(toggleLayer('user'))
