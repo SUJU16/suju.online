@@ -14,9 +14,11 @@ function randomFloat(a, b) {
 
 module.exports = {
   generateRandomJSON() {
-    const randomLat = centerLatitude + randomFloat(-0.9, 0.9)
-    const randomLong = centerLongitude + randomFloat(-0.9, 0.9)
-    const randomDate = centerDate.add(randomInt(-2, 2), 'days')
+    const randomLat = centerLatitude + randomFloat(-0.008, 0.008)
+    const randomLong = centerLongitude + randomFloat(-0.016, 0.016)
+    const randomDate = centerDate
+                        .add(randomInt(0, 5), 'hours')
+                        .subtract(randomInt(0, 5), 'hours')
     const result = {
       "latitude": randomLat,
       "longitude": randomLong,
