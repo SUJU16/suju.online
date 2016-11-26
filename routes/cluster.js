@@ -15,6 +15,7 @@ export default express.Router()
 .get('/', (req, res) => {
   db.getData()
   .then( (json) => clusters.calculate(json))
+  .then( (clusters) => res.json(clusters))
   .catch( (error) => {
     res.status(500).json({err: error})
   })
