@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { setActiveApp, setLocation, loadAllDataPoints, loadAllClusters } from '../store/actions'
+import { setActiveApp, setLocation, loadAllDataPoints, loadAllClusters, loadBasicRoute } from '../store/actions'
 
 import style from '../styles/Main.scss'
 import MapIcon from 'react-icons/lib/io/ios-location'
@@ -51,6 +51,7 @@ const mapDispatchToProps = (dispatch) => {
     loadData: (id) => {
       dispatch(loadAllDataPoints())
       dispatch(loadAllClusters())
+      dispatch(loadBasicRoute())
     },
     saveLocation: (location) => dispatch(setLocation(location)),
     setActive: (id) => dispatch(setActiveApp(id))

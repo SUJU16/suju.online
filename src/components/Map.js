@@ -8,7 +8,7 @@ import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
 import Page from './Page'
 import style from '../styles/Map.scss'
 
-import { Map, TileLayer, LayerGroup, Circle } from 'react-leaflet';
+import { Map, TileLayer, LayerGroup, Circle, Polyline } from 'react-leaflet';
 
 var colors = {}
 
@@ -19,7 +19,7 @@ const getColor = (id) => {
   return colors[id]
 }
 
-const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
+const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, currentRoute, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -59,6 +59,9 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
+          { currentRoute ? (
+            <Polyline positions={currentRoute} color={'#6ccaf2'} weight={4} smoothFactor={1} />
+          ) : null}
         </LayerGroup>
       </Map>
     : 'Loading location'}
@@ -72,7 +75,8 @@ const mapStateToProps = (state) => ({
   zoomLevel: state.preferences.zoomLevel,
   peopleEnabled: state.preferences.layers.people,
   clustersEnabled: state.preferences.layers.clusters,
-  userEnabled: state.preferences.layers.user
+  userEnabled: state.preferences.layers.user,
+  currentRoute: state.preferences.currentRoute
 })
 
 const mapDispatchToProps = (dispatch) => {

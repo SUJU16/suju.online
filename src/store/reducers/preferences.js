@@ -6,7 +6,8 @@ const preferences = (state = {
     'clusters': false,
     'user': false
   },
-  activeApp: 'map'
+  activeApp: 'map',
+  currentRoute: undefined
 }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_APP':
@@ -21,6 +22,11 @@ const preferences = (state = {
           lat: action.ltd,
           lon: action.lon
         }
+      }
+    case 'SET_CURRENT_ROUTE':
+      return {
+        ...state,
+        currentRoute: action.route
       }
     case 'SET_ZOOM':
       return {
