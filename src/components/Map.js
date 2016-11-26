@@ -26,16 +26,16 @@ const getRandomColor = (id) => {
   return colors[id+'lol']
 }
 
-const renderClusters = (clusters, clustersEnabled) => {
+const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
   if (clusters && clustersEnabled) {
     var elems = []
-    if (clusters.clusters) {
-      clusters.clusters.map(cluster => {
+    if (clusters) {
+      clusters.map(cluster => {
         elems.push(<Circle key={cluster.id} center={{ lat: cluster.latitude, lon: cluster.longitude }} color={getColor(cluster.id, cluster.radius)} radius={cluster.radius} weight={1} opacity={0.5}/>)
       })
     }
-    if (clusters.points) {
-      cluster.points.map(points => {
+    if (clustered_datapoints) {
+      clustered_datapoints.map(points => {
         elems.push(<Circle key={point.id} center={{ lat: points.latitude, lon: points.longitude }} color={getColor(points.id)} radius={20} weight={1} opacity={0.5}/>)
       })
     }
@@ -93,6 +93,7 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
 const mapStateToProps = (state) => ({
   datapoints: state.clusters.datapoints,
   clusters: state.clusters.clusters,
+  clustered_datapoints: state.clusters.clustered_datapoints,
   location: state.preferences.location,
   zoomLevel: state.preferences.zoomLevel,
   peopleEnabled: state.preferences.layers.people,

@@ -1,14 +1,9 @@
 const cluster = (state, action) => {
   switch (action.type) {
     case 'ADD_CLUSTER':
-      return {
-        id: action.id,
-        timestamp: action.date,
-        latitude: action.latitude,
-        longitude: action.longitude,
-        size: action.n_points,
-        radius: action.radius
-      }
+      return action.data
+    case 'ADD_CLUSTERED_DATAPOINT':
+      return action.data
     case 'ADD_DATAPOINT':
       return action.data
     default:
@@ -18,7 +13,8 @@ const cluster = (state, action) => {
 
 const clusters = (state = {
     datapoints: [],
-    clusters: []
+    clusters: [],
+    clustered_datapoints: []
   }, action) => {
   switch (action.type) {
     case 'ADD_CLUSTER':
@@ -26,6 +22,14 @@ const clusters = (state = {
         ...state,
         clusters: [
           ...state.clusters,
+          cluster(undefined, action)
+        ]
+      }
+    case 'ADD_CLUSTERED_DATAPOINT':
+      return {
+        ...state,
+        clustered_datapoints: [
+          ...state.clustered_datapoints,
           cluster(undefined, action)
         ]
       }

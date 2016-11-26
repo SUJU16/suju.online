@@ -4,13 +4,16 @@ import moment from 'moment'
 import clusters from './clusters'
 import { readRoutes } from '../../utils'
 
-var nextClusterId = 0
 var nextRouteId = 0
 
 export const addCluster = (data) => ({
   type: 'ADD_CLUSTER',
-  id: nextClusterId++,
-  ...data
+  data
+})
+
+export const addClusteredDataPoint = (data) => ({
+  type: 'ADD_CLUSTERED_DATAPOINT',
+  data
 })
 
 export const setLocation = (location) => ({
@@ -122,9 +125,12 @@ export function uploadPoint(e) {
 export function loadAllClusters() {
   return dispatch => {
     fetchData('http://localhost:5000/api/cluster')
-    .then(clusters => {
-      for (var i in clusters) {
-        dispatch(addCluster(clusters[i]))
+    .then(json => {
+      for (var i in json.clusters) {
+        dispatch(addCluster(json.clusters[i]))
+      }
+      for (var i in json.points) {
+        dispatch(addClusteredDataPoint(json.points[i]))
       }
     })
   }
