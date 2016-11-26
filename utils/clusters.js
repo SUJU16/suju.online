@@ -15,7 +15,6 @@ module.exports = {
 
       shell.on('close', (code) => {
         if (code != 0) reject({err: code})
-        console.log(clusterData)
         resolve(JSON.parse(clusterData))
       })
     })

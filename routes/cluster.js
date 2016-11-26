@@ -4,11 +4,9 @@ import clusters from '../utils/clusters'
 import pathfinder from '../utils/pathfinder'
 
 const endPoint = {
-  "location": {
-      "latitude": 60.165619,
-      "longitude": 24.968123,
-      "n_points": 0
-  }
+    "latitude": 60.165619,
+    "longitude": 24.968123,
+    "n_points": 0
 }
 
 export default express.Router()
@@ -41,6 +39,8 @@ export default express.Router()
   )
   .then( (splines) => res.json(splines))
   .catch( (error) => {
-    req.status(500).json({err: error})
+    console.log('bug?')
+    res.status(500).json({err: error})
+    console.log('bug!?')
   })
 })
