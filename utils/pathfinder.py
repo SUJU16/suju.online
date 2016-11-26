@@ -96,7 +96,7 @@ def sjuktra(stops, end):
 				log("> count")
 				continue
 
-			t_time = timeDistance(u, stops[i])
+			t_time = timeDistance(stops[i], u)
 			if not t_time:
 				log("time err")
 				continue
@@ -104,9 +104,9 @@ def sjuktra(stops, end):
 			log("Time to travell [%s-%s]: %i" % (str(u_idx), str(i), t_time))
 
 			if dist[u_idx]['date'] == None:
-				time = i_time + t_time
+				time = i_time - t_time
 			else:
-				time = dist[u_idx]['date'] + t_time
+				time = dist[u_idx]['date'] - t_time
 
 			free_space = 12 - current_count
 			log("Free: %i" % free_space)
@@ -128,7 +128,7 @@ def sjuktra(stops, end):
 				if dist[u_idx]['date'] == None:
 					dist[i]['date'] = i_time
 				else:
-					dist[i]['date'] = dist[u_idx]['date'] + t_time
+					dist[i]['date'] = dist[u_idx]['date'] - t_time
 				prev[i] = u_idx
 
 				log("Take [%s] -> [%s]" % (str(u_idx), str(i)))
@@ -137,8 +137,8 @@ def sjuktra(stops, end):
 		#log(dist)
 
 	#log("")
-	log(dist)
-	log(prev)
+	log(json.dumps(dist))
+	log(json.dumps(prev))
 
 	return (dist, prev)
 
@@ -152,7 +152,8 @@ def pathfind(stops, end):
 				"longitude": stops[src]['location']['longitude'],
 				"latitude": stops[src]['location']['latitude']
 			},
-			"count": c
+			"count": c,
+			"date": dist[src]['date'],
 		})
 		stops[src]['n_points'] = stops[src]['n_points'] - c
 
@@ -178,12 +179,15 @@ def pathfind(stops, end):
 			i = prev[i]
 
 		addPathToRoute(route, stops, dist, prev_i, i)
+		
+		end_time = dist[prev_i]['date'] + timeDistance(stops[prev_i], end)
 		route.append({
 			"location": {
 				"longitude": end['location']['longitude'],
 				"latitude": end['location']['latitude']
 			},
-			"count": 0
+			"count": 0,
+			"date": end_time
 		})
 
 		routes.append(route)
