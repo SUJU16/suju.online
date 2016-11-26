@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { setLocation } from '../store/actions'
+import { setLocation, loadAllDataPoints } from '../store/actions'
 
 import style from '../styles/Main.scss'
 import MapIcon from 'react-icons/lib/io/ios-location'
@@ -16,8 +16,9 @@ class Main extends React.Component {
   }
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(pos => {
-      this.props.setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude})
+      this.props.saveLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude})
     })
+    this.props.loadData()
   }
   render() {
     return (
@@ -42,6 +43,13 @@ class Main extends React.Component {
   }
 }
 
-export default connect(undefined, {
-  setLocation
-})(Main)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadData: (id) => {
+      dispatch(loadAllDataPoints())
+    },
+    saveLocation: (location) => dispatch(setLocation(location))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Main)
