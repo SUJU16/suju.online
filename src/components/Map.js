@@ -49,7 +49,7 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
               lat: point.latitude,
               lon: point.longitude
             }
-            return (<Circle key={point.id} center={coords} color={getColor(point.size)} radius={point.size} />)
+            return (<Circle key={point.id} center={coords} color={getColor(point.size)} radius={point.radius} />)
           }) : null}
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>

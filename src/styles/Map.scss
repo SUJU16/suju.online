@@ -16,11 +16,21 @@
 }
 
 .middle {
-  top: 50vh;
+  @media(max-width: $break-small) {
+    top: 60vh;
+  }
+  @media(min-width: $break-large) {
+    top: 50vh;
+  }
 }
 
 .bottom {
-  bottom: 5vh;
+  @media(max-width: $break-small) {
+    bottom: 20vh;
+  }
+  @media(min-width: $break-large) {
+    bottom: 5vh;
+  }
 }
 
 .sidebar {
