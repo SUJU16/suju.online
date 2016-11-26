@@ -53,8 +53,9 @@ export function loadAllDataPoints() {
 export function getLocation() {
   return dispatch => {
     console.log('get location')
-    navigator.geolocation.getCurrentPosition(pos => {
-      dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}))
+    navigator.geolocation.watchPosition(pos => {
+      dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}),
+      { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true })
     })
   }
 }
