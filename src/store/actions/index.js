@@ -49,6 +49,11 @@ export function loadAllDataPoints() {
   }
 }
 
+export const setActiveApp = (id) => ({
+  type: 'SET_ACTIVE_APP',
+  id
+})
+
 const clusters = [{"date":1480212288.2844827,"location":{"latitude":60.16589716928018,"longitude":24.96703888435517},"n_points":232},{"date":1480145515,"location":{"latitude":60.159659990600005,"longitude":24.977102631833333},"n_points":3},{"date":1480076600.7142856,"location":{"latitude":60.169792791528565,"longitude":24.968448538942855},"n_points":7},{"date":1480053972.142857,"location":{"latitude":60.162377432128565,"longitude":24.961673325457138},"n_points":7}]
 
 export function loadAllClusters() {

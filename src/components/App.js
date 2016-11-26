@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, hashHistory } from 'react-router'
 
 import logo from '../assets/logo.png'
 import '../styles/App.scss'
@@ -11,7 +11,7 @@ import SettingsPage from './Settings'
 class App extends React.Component {
   render() {
     return (
-      <Router history={browserHistory}>
+      <Router history={hashHistory}>
         <Route path="/" component={Main}>
           <Route path="map" component={MapPage}/>
           <Route path="settings" component={SettingsPage}/>
