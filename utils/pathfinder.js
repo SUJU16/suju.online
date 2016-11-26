@@ -33,7 +33,9 @@ module.exports = {
       fetch(url, options)
       .then( (reqData) => {
         reqData.json()
-        .then( (data) => resolve(data))
+        .then( (data) => {
+          resolve(data)
+        })
         .catch( (error) => reject(error))
       })
       .catch( (error) => reject(error))

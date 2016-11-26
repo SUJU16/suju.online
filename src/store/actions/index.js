@@ -1,7 +1,5 @@
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
-import clusters from './clusters'
-import { getCoordinates } from '../../utils'
 
 var nextClusterId = 0
 
@@ -48,13 +46,12 @@ const fetchData = (url) => {
 
 export function loadAllDataPoints() {
   return dispatch => {
-    // fetchData('http://localhost:5000/api/database')
-    // .then(list => {
-    const list = clusters.points
+    fetchData('http://localhost:5000/api/database')
+    .then(list => {
       for (var i in list) {
         dispatch(addDataPoint(list[i]))
       }
-    // })
+    })
   }
 }
 

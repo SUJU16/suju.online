@@ -10,7 +10,7 @@ module.exports = {
       })
 
       shell.stderr.on('data', (data) => {
-        //console.log(data.toString())
+        console.log(data.toString())
       })
 
       shell.on('close', (code) => {
