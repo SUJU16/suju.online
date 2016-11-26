@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import moment from 'moment'
 
 var nextClusterId = 0
 
@@ -35,7 +36,7 @@ export const addDataPoint = (dataPoint) => ({
 
 const fetchData = (url) => {
   return fetch(url)
-  .then(data => data.json())
+  .then(res => res.json())
 }
 
 export function loadAllDataPoints() {
@@ -45,6 +46,43 @@ export function loadAllDataPoints() {
       for (var i in list) {
         dispatch(addDataPoint(list[i]))
       }
+    })
+  }
+}
+
+const uploadSuccess = (res) => ({
+  type: 'UPLOAD_SUCCESS',
+  res
+})
+
+const uploadFailure = (err) => ({
+  type: 'UPLOAD_FAILURE',
+  err
+})
+
+export function uploadPoint(e) {
+  return dispatch => {
+    console.log('addpoint')
+    const { lat: latitude, lng: longitude } = e.latlng
+    const json = JSON.stringify({latitude, longitude, date: moment().unix()})
+    console.log(json)
+    fetch(
+      'http://localhost:5000/api/database', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: json
+      }
+    )
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      dispatch(addDataPoint(res))
+    })
+    .catch(err => {
+      console.log(err)
+      dispatch(uploadFailure(err))
     })
   }
 }
