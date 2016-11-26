@@ -2,8 +2,12 @@ import polyline from 'polyline'
 import routes from './routes'
 
 export const readRoute = (raw) => {
-  const coords = polyline.decode(raw[0].route, 6)
-  return coords
+  let fullRoute = []
+  raw.forEach((a) => { 
+    const route = polyline.decode(a.route, 6)
+    fullRoute = fullRoute.concat(route)
+  })
+  return fullRoute
 }
 
 export const readRoutes = () => {
