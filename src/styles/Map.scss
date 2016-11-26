@@ -17,7 +17,7 @@
 
 .middle {
   @media(max-width: $break-small) {
-    top: 60vh;
+    bottom: 14rem;
   }
   @media(min-width: $break-large) {
     top: 50vh;
@@ -26,7 +26,7 @@
 
 .bottom {
   @media(max-width: $break-small) {
-    bottom: 20vh;
+    bottom: 10rem;
   }
   @media(min-width: $break-large) {
     bottom: 5vh;
