@@ -26,6 +26,25 @@ const getRandomColor = (id) => {
   return colors[id+'lol']
 }
 
+const renderClusters = (clusters, clustersEnabled) => {
+  if (clusters && clustersEnabled) {
+    var elems = []
+    if (clusters.clusters) {
+      clusters.clusters.map(cluster => {
+        elems.push(<Circle key={cluster.id} center={{ lat: cluster.latitude, lon: cluster.longitude }} color={getColor(cluster.id, cluster.radius)} radius={cluster.radius} weight={1} opacity={0.5}/>)
+      })
+    }
+    if (clusters.points) {
+      cluster.points.map(points => {
+        elems.push(<Circle key={point.id} center={{ lat: points.latitude, lon: points.longitude }} color={getColor(points.id)} radius={20} weight={1} opacity={0.5}/>)
+      })
+    }
+    return elems
+  } else {
+    return null
+  }
+}
+
 const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
@@ -49,20 +68,14 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
             />
-          { (datapoints && peopleEnabled) ? datapoints.map(point => {
+          { (datapoints && peopleEnabled && !clustersEnabled) ? datapoints.map(point => {
             const coords = {
               lat: point.latitude,
               lon: point.longitude
             }
             return (<Circle key={point.id} center={coords} color={clustersEnabled ? getColor(point.cluster_id) : '#2366b4'} weight={0.5} radius={20} fillOpacity={1} />)
           }) : null}
-          { (clusters && clustersEnabled) ? clusters.map(point => {
-            const coords = {
-              lat: point.latitude,
-              lon: point.longitude
-            }
-            return (<Circle key={point.id} center={coords} color={getColor(point.id, point.radius)} radius={point.radius} weight={1} opacity={0.5}/> )
-          }) : null}
+          renderClusters(clusters, clustersEnabled)
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
@@ -73,7 +86,7 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
           }) : null}
         </LayerGroup>
       </Map>
-    : 'Loading location'}
+      : 'Loading location'}
   </div>
 )
 

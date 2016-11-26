@@ -51,6 +51,21 @@ const fetchData = (url) => {
   .then(res => res.json())
 }
 
+const uploadSuccess = (res) => ({
+  type: 'UPLOAD_SUCCESS',
+  res
+})
+
+const uploadFailure = (err) => ({
+  type: 'UPLOAD_FAILURE',
+  err
+})
+
+export const setActiveApp = (id) => ({
+  type: 'SET_ACTIVE_APP',
+  id
+})
+
 export function loadAllDataPoints() {
   return dispatch => {
     fetchData('http://localhost:5000/api/database')
@@ -81,16 +96,6 @@ export function getLocation() {
   }
 }
 
-const uploadSuccess = (res) => ({
-  type: 'UPLOAD_SUCCESS',
-  res
-})
-
-const uploadFailure = (err) => ({
-  type: 'UPLOAD_FAILURE',
-  err
-})
-
 export function uploadPoint(e) {
   return dispatch => {
     const { lat: latitude, lng: longitude } = e.latlng
@@ -113,11 +118,6 @@ export function uploadPoint(e) {
     })
   }
 }
-
-export const setActiveApp = (id) => ({
-  type: 'SET_ACTIVE_APP',
-  id
-})
 
 export function loadAllClusters() {
   return dispatch => {
