@@ -3,11 +3,24 @@ import googlemaps
 from datetime import datetime
 import json
 import sys
+import time
+import os
 
-gmaps = googlemaps.Client(key='AIzaSyD-EkE2N4ULYVKqvd3RpHiy-gQeAVT2fNo')
+key = os.environ['GMAP_API']
+if not key:
+	sys.stderr.write("Give API key")
+	sys.exit(1)
+gmaps = googlemaps.Client(key=key)
+
+def log(s):
+	pass
+	#print(s)
 
 def cost(time, count):
-	return time/count
+	#print(time, count)
+	#print(1.0*time/(count*count))
+	time = time/60.0
+	return time/(count*count)
 
 def timeDistance(p1, p2):
 	global gmaps
@@ -20,9 +33,9 @@ def timeDistance(p1, p2):
 							mode="driving",
 							departure_time=now
 							)
-	#print(res)
-	#print("%s %s" % (p1['location']['latitude'], p1['location']['longitude']))
-	#print("%s %s" % (p2['location']['latitude'], p2['location']['longitude']))
+	#log(res)
+	#log("%s %s" % (p1['location']['latitude'], p1['location']['longitude']))
+	#log("%s %s" % (p2['location']['latitude'], p2['location']['longitude']))
 	try:
 		return res[0]['legs'][0]['duration_in_traffic']['value']
 	except:
@@ -30,7 +43,7 @@ def timeDistance(p1, p2):
 
 def sjuktra(stops, end):
 	MAX_PEOPLE = 12
-	TIMERANGE = 160*60
+	TIMERANGE = 30*60
 
 	unvisited = Set(range(len(stops)))
 	unvisited.add("end")
@@ -39,10 +52,10 @@ def sjuktra(stops, end):
 	dist = dict()
 
 	for i in unvisited:
-		dist[i] = {"cost": 9999999999, "count": 0, "date": 0}
+		dist[i] = {"cost": 9999999999999999, "count": 0, "date": None}
 		prev[i] = None
 
-	dist['end'] = {"cost": 0, "count": 0, "date": 0}
+	dist['end'] = {"cost": 0, "count": 0, "date": None}
 
 	while unvisited:
 		# Find smallest unvisited vertex
@@ -54,81 +67,109 @@ def sjuktra(stops, end):
 		u = stops[u_idx] if u_idx != "end" else end
 		unvisited.remove(u_idx)
 
+		log("Smallest: " + str(u_idx))
+
 		for i in unvisited:
-			if i != u_idx:
-				i_count = stops[i]['n_points']
-				i_time = stops[i]['date']
+			i_count = stops[i]['n_points']
+			i_time = stops[i]['date']
+			current_count = dist[u_idx]['count']
 
-				if dist[u_idx]['date'] > i_time:
-					continue
+			log("[%s] count: %s" % (str(i), str(i_count)))
+			log("[%s] time: %s" % (str(i), str(i_time)))
 
-				if dist[u_idx]['count'] >= 12:
-					continue
+			if dist[u_idx]['date'] != None and dist[u_idx]['date'] < i_time:
+				log("> time")
+				continue
 
-				t_time = timeDistance(u, stops[i])
-				if not t_time:
-					continue
+			if current_count >= 12:
+				log("> count")
+				continue
 
+			t_time = timeDistance(u, stops[i])
+			if not t_time:
+				log("time err")
+				continue
+
+			log("Time to travell [%s-%s]: %i" % (str(u_idx), str(i), t_time))
+
+			if dist[u_idx]['date'] == None:
+				time = i_time + t_time
+			else:
 				time = dist[u_idx]['date'] + t_time
 
-				count = dist[u_idx]['count'] + i_count
-				if count > MAX_PEOPLE:
-					count = count - MAX_PEOPLE
+			free_space = 12 - current_count
+			log("Free: %i" % free_space)
 
-				i_cost = dist[u_idx]['cost'] + cost(t_time, count)
+			take_count = min(i_count, free_space)
+			count = current_count + take_count
 
+			log("Time: %i" % time)
+			log("Count: %i" % count)
 
-				if i_cost < dist[i] and dist[u_idx]['count'] < MAX_PEOPLE and (abs(time - i_time) < TIMERANGE or dist[u_idx]['date'] == 0):
-					dist[i]['cost'] = i_cost
-					dist[i]['count'] = count
+			i_cost = dist[u_idx]['cost']*(current_count*current_count)/(count*count) + cost(t_time, count)
+			#i_cost = cost(t_time, take_count)
+			log("Cost: %i" % i_cost)
 
-					if dist[u_idx]['date'] == 0:
-						dist[i]['date'] = i_time
-					else:
-						dist[i]['date'] = dist[u_idx]['date'] + t_time
-					prev[i] = u_idx
+			if i_cost < dist[i]['cost'] and dist[u_idx]['count'] < MAX_PEOPLE and (abs(time - i_time) < TIMERANGE or dist[u_idx]['date'] == None):
+				dist[i]['cost'] = i_cost
+				dist[i]['count'] = count
 
+				if dist[u_idx]['date'] == None:
+					dist[i]['date'] = i_time
+				else:
+					dist[i]['date'] = dist[u_idx]['date'] + t_time
+				prev[i] = u_idx
 
-		#print(dist)
+				log("Take [%s] -> [%s]" % (str(u_idx), str(i)))
 
-	#print("")
-	#print(dist)
-	#print(prev)
+			log("")
+		#log(dist)
+
+	#log("")
+	log(dist)
+	log(prev)
 
 	return (dist, prev)
 
 def pathfind(stops, end):
-	dist, prev = sjuktra(stops, end)
-
-	m = None
-	for i in dist:
-		if (m == None or dist[i]['cost'] < dist[m]['cost']) and i != 'end':
-			m = i
-
 	routes = []
-	route = []
-	i = m
-	#print(m)
-	while i != 'end':
+
+	while len(stops) > 0:
+		dist, prev = sjuktra(stops, end)
+
+		m = None
+		for i in dist:
+			if (m == None or dist[i]['cost'] < dist[m]['cost']) and i != 'end':
+				m = i
+
+
+		route = []
+		idx = []
+		i = m
+		#log(m)
+		while i != 'end':
+			route.append({
+				"location": {
+					"longitude": stops[i]['location']['longitude'],
+					"latitude": stops[i]['location']['latitude']
+				},
+				"count": dist[i]['count']
+			})
+			idx.append(i)
+
+			i = prev[i]
+
 		route.append({
 			"location": {
-				"longitude": stops[i]['location']['longitude'],
-				"latitude": stops[i]['location']['latitude']
+				"longitude": end['location']['longitude'],
+				"latitude": end['location']['latitude']
 			},
-			"count": dist[i]['count']
+			"count": 0
 		})
-		i = prev[i]
+		routes.append(route)
 
-	route.append({
-		"location": {
-			"longitude": end['location']['longitude'],
-			"latitude": end['location']['latitude']
-		},
-		"count": 0
-	})
+		stops = [i for j, i in enumerate(stops) if j not in idx]
 
-	#print(route)
-	routes.append(route)
 	return routes
 
 def main():
@@ -136,7 +177,7 @@ def main():
 	data = json.loads(data)
 
 	paths = pathfind(data['result'], data['end'])
-
+	#log(len(paths))
 	print(json.dumps({'paths': paths}))
 
 main()
