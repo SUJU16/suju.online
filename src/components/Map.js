@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setLocation, setZoomLevel, toggleLayer } from '../store/actions'
+import { setLocation, setZoomLevel, toggleLayer, uploadPoint } from '../store/actions'
 import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 
@@ -13,14 +13,18 @@ const getColor = (size) => {
   return '#be2f2f'
 }
 
-const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, setLocation, setZoomLevel, toggleLayer }) => (
+const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, setLocation, setZoomLevel, toggleLayer, newPoint }) => (
   <div className={style.container}>
     <div className={style.sidebar}>
       <button className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
       <button className={clustersEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "clusters")}><ClusterIcon size={24}/></button>
     </div>
     {location ?
-      <Map className={style.map} center={location} zoom={zoomLevel} onZoom={setZoomLevel}>
+      <Map className={style.map}
+        center={location}
+        zoom={zoomLevel}
+        onZoom={setZoomLevel}
+        onClick={newPoint}>
         <LayerGroup>
           <TileLayer
             className={style.tileLayer}
@@ -56,11 +60,14 @@ const mapStateToProps = (state) => ({
   clustersEnabled: state.preferences.layers.clusters
 })
 
-const mapDispatchToProps = ({
-  setLocation,
-  setZoomLevel,
-  toggleLayer
-})
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLocation: (location) => dispatch(setLocation(location)),
+    setZoomLevel: (zoomLevel) => dispatch(setZoomLevel(zoomLevel)),
+    toggleLayer: (id) => dispatch(toggleLayer(id)),
+    newPoint: (e) => dispatch(uploadPoint(e))
+  }
+}
 
 export default connect(
   mapStateToProps,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { setLocation, loadAllDataPoints, loadAllClusters } from '../store/actions'
+import { setActiveApp, setLocation, loadAllDataPoints, loadAllClusters } from '../store/actions'
 
 import style from '../styles/Main.scss'
 import MapIcon from 'react-icons/lib/io/ios-location'
@@ -15,24 +15,30 @@ class Main extends React.Component {
     super()
   }
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.props.saveLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude})
-    })
+    // navigator.geolocation.getCurrentPosition(pos => {
+    //   this.props.saveLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude})
+    // })
     this.props.loadData()
+    window.addEventListener('hashchange', () => {
+      this.props.setActive(window.location.hash.substr(1).replace('/', ''))
+    })
   }
   render() {
     return (
       <div className={style.container}>
         <div className={style.navigator}>
-          <Link to="/map" className={style.link}>
+          <Link to="/map"
+            className={style.link + (this.props.activeApp == 'map' ? ' ' + style.activeApp : '')}>
             <MapIcon size={24} />
             <span>Map</span>
           </Link>
-          <Link to="/buses" className={style.link}>
+          <Link to="/buses"
+            className={style.link + (this.props.activeApp == 'buses' ? ' ' + style.activeApp : '')}>
             <BusIcon size={24} />
             <span>Transit</span>
           </Link>
-          <Link to="/settings" className={style.link}>
+          <Link to="/settings"
+            className={style.link + (this.props.activeApp == 'settings' ? ' ' + style.activeApp : '')}>
             <SettingsIcon size={24} />
             <span>Settings</span>
           </Link>
@@ -49,8 +55,13 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadAllDataPoints())
       dispatch(loadAllClusters())
     },
-    saveLocation: (location) => dispatch(setLocation(location))
+    saveLocation: (location) => dispatch(setLocation(location)),
+    setActive: (id) => dispatch(setActiveApp(id))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Main)
+const mapStateToProps = (state) => ({
+  activeApp: state.preferences.activeApp,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main)

@@ -16,13 +16,20 @@
   z-index: 100;
   background-color: lighten($background, 4);
   border-top: 2px solid lighten($background, 8);
+  color: $bluewhite;
   display: flex;
   justify-content: center;
-  height: 4rem;
+  height: 3.2rem;
+}
+
+.activeApp {
+  * {
+    color: white;
+  }
 }
 
 .link {
-  color: white;
+  color: lighten($blueblack, 20);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: lighter;
@@ -33,6 +40,6 @@
   margin: 0 2rem;
 
   span {
-    margin-top: 4px;
+    margin-top: 0.2rem;
   }
 }

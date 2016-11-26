@@ -1,12 +1,18 @@
 const preferences = (state = {
-  location: undefined,
-  zoomLevel: 11,
+  location: {lat: 60.165619, lon: 24.968123},
+  zoomLevel: 14,
   layers: {
     'people': false,
     'clusters': false
-  }
+  },
+  activeApp: 'map'
 }, action) => {
   switch (action.type) {
+    case 'SET_ACTIVE_APP':
+      return {
+        ...state,
+        activeApp: action.id
+      }
     case 'SET_LOCATION':
       return {
         ...state,
