@@ -110,7 +110,7 @@ for i in range(len(clusters)):
     radius = np.max(deltas)
 
     cluster = {'n_points': len(points), 'date': mean[2],
-        'latitude': mean[0], 'longitude': mean[1],
+        'location': {'latitude': mean[0], 'longitude': mean[1]},
         'points': [int(x[3]) for x in points], 'radius': radius}
     
 
