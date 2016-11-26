@@ -10,3 +10,8 @@ export const setLocation = (location) => ({
   type: 'SET_LOCATION',
   ...location
 })
+
+export const setZoomLevel = (zoomLevel) => ({
+  type: 'SET_ZOOM',
+  zoomLevel
+})
