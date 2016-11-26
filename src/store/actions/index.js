@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch'
 import moment from 'moment'
 
 import clusters from './clusters'
-import { readRoutes } from '../../utils'
+import { readRoute } from '../../utils'
 
 var nextRouteId = 0
 
@@ -118,7 +118,7 @@ export function loadAllRoutes() {
     fetchData('http://localhost:5000/api/cluster/splines')
     .then(routes => {
       for (let i in routes) {
-        dispatch(addRoute(routes[i]))
+        dispatch(addRoute(readRoute(routes[i])))
       }
     })
   }

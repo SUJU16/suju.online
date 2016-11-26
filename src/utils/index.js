@@ -1,8 +1,8 @@
 import polyline from 'polyline'
 import routes from './routes'
 
-const readRoute = (raw) => {
-  const coords = polyline.decode(raw.route, 6)
+const const readRoute = (raw) => {
+  const coords = polyline.decode(raw[0].route, 6)
   return coords
 }
 
