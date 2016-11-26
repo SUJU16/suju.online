@@ -10,8 +10,13 @@ import style from '../styles/Map.scss'
 
 import { Map, TileLayer, LayerGroup, Circle } from 'react-leaflet';
 
-const getColor = (size) => {
-  return '#be2f2f'
+var colors = {}
+
+const getColor = (id) => {
+  if (!colors[id]) {
+    colors[id] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+  }
+  return colors[id]
 }
 
 const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
@@ -42,14 +47,14 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
               lat: point.latitude,
               lon: point.longitude
             }
-            return (<Circle key={point.id} center={coords} color={'#1e79b4'} weight={0.5} radius={20} fillOpacity={1} />)
+            return (<Circle key={point.id} center={coords} color={clustersEnabled ? getColor(point.cluster_id) : '#2366b4'} weight={0.5} radius={20} fillOpacity={1} />)
           }) : null}
           { (clusters && clustersEnabled) ? clusters.map(point => {
             const coords = {
               lat: point.latitude,
               lon: point.longitude
             }
-            return (<Circle key={point.id} center={coords} color={getColor(point.size)} radius={point.radius} />)
+            return (<Circle key={point.id} center={coords} color={getColor(point.id)} radius={point.radius} />)
           }) : null}
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>

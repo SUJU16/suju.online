@@ -53,8 +53,9 @@ export function loadAllDataPoints() {
 export function getLocation() {
   return dispatch => {
     console.log('get location')
-    navigator.geolocation.getCurrentPosition(pos => {
-      dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}))
+    navigator.geolocation.watchPosition(pos => {
+      dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}),
+      { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true })
     })
   }
 }
@@ -105,12 +106,11 @@ const clusters = [{"date":1480212288.2844827,"location":{"latitude":60.165897169
 
 export function loadAllClusters() {
   return dispatch => {
-    // fetchData('http://localhost:5000/api/clusters')
-    // .then(list => {
-    //
-    // })
-    for (var i in clusters) {
-      dispatch(addCluster(clusters[i]))
-    }
+    fetchData('http://localhost:5000/api/cluster')
+    .then(clusters => {
+      for (var i in clusters) {
+        dispatch(addCluster(clusters[i]))
+      }
+    })
   }
 }

@@ -1,4 +1,5 @@
 import {spawn} from 'child_process'
+import fetch from 'isomorphic-fetch'
 
 module.exports = {
   find(json) {
@@ -17,6 +18,25 @@ module.exports = {
         if (code != 0) reject({err: code})
         resolve(pathData)
       })
+    })
+  },
+
+  getSpline(a, b) {
+    const url = `https://data.embers.city/api/routing?start_point=${a.location.latitude},${a.location.longitude}&end_point=${a.location.latitude},${a.location.longitude}&is_sorted=true&is_do_instructions=true`
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Token ' + process.env.EMBERSTOKEN
+      }
+    }
+    return new Promise( (resolve, reject) => {
+      fetch(url, options)
+      .then( (reqData) => {
+        reqData.json()
+        .then( (data) => resolve(data))
+        .catch( (error) => reject(error))
+      })
+      .catch( (error) => reject(error))
     })
   }
 }
