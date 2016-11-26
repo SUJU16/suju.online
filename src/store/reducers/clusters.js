@@ -3,9 +3,10 @@ const cluster = (state, action) => {
     case 'ADD_CLUSTER':
       return {
         id: action.id,
-        timestamp: action.timestamp,
-        latitude: action.ltd,
-        longitude: action.lon
+        timestamp: action.date,
+        latitude: action.location.latitude,
+        longitude: action.location.longitude,
+        radius: action.n_points
       }
     case 'ADD_DATAPOINT':
       return action.data

@@ -1,16 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setLocation } from '../store/actions'
+import { setLocation, setZoomLevel } from '../store/actions'
 
 import Page from './Page'
 import style from '../styles/Map.scss'
 
 import { Map, TileLayer, LayerGroup, Circle } from 'react-leaflet';
 
-const MapView = ({ datapoints, location, zoomLevel, setLocation }) => (
+const MapView = ({ datapoints, clusters, location, zoomLevel, setLocation, setZoomLevel }) => (
   <div className={style.container}>
   {location ?
-    <Map className={style.map} center={location} zoom={zoomLevel}>
+    <Map className={style.map} center={location} zoom={zoomLevel} onZoom={setZoomLevel}>
       <LayerGroup>
         <TileLayer
           className={style.tileLayer}
@@ -24,6 +24,13 @@ const MapView = ({ datapoints, location, zoomLevel, setLocation }) => (
           }
           return (<Circle key={point.id} center={coords} radius={20} />)
         }) : null}
+        { clusters ? clusters.map(point => {
+          const coords = {
+            lat: point.latitude,
+            lon: point.longitude
+          }
+          return (<Circle key={point.id} center={coords} color={'#0eff10'} radius={point.radius} />)
+        }) : null}
       </LayerGroup>
     </Map>
     : 'Loading location'}
@@ -32,12 +39,14 @@ const MapView = ({ datapoints, location, zoomLevel, setLocation }) => (
 
 const mapStateToProps = (state) => ({
   datapoints: state.clusters.datapoints,
+  clusters: state.clusters.clusters,
   location: state.preferences.location,
   zoomLevel: state.preferences.zoomLevel
 })
 
 const mapDispatchToProps = ({
-  setLocation
+  setLocation,
+  setZoomLevel
 })
 
 export default connect(
