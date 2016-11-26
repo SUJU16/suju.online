@@ -80,15 +80,6 @@ export function loadAllDataPoints() {
   }
 }
 
-export function loadAllRoutes() {
-  return dispatch => {
-    const routes = readRoutes()
-    for (let i in routes) {
-      dispatch(addRoute(routes[i]))
-    }
-  }
-}
-
 export function getLocation() {
   return dispatch => {
     console.log('get location')
@@ -118,6 +109,17 @@ export function uploadPoint(e) {
     })
     .catch(err => {
       dispatch(uploadFailure(err))
+    })
+  }
+}
+
+export function loadAllRoutes() {
+  return dispatch => {
+    fetchData('http://localhost:5000/api/cluster/splines')
+    .then(json => {
+      for (let i in routes) {
+        dispatch(addRoute(routes[i]))
+      }
     })
   }
 }
