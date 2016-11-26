@@ -23,9 +23,7 @@ export default express.Router()
   db.getData()
   .then( (json) => clusters.calculate(json))
   .then( (clusters) => res.json(clusters))
-  .catch( (error) => {
-    res.status(500).json({err: error})
-  })
+  .catch( (error) => res.status(500).json({err: error}))
 })
 .get('/sjukstra', (req, res) => {
   db.getData()
@@ -39,10 +37,6 @@ export default express.Router()
   .then( (json) => clusters.calculate(json))
   .then( (clusters) => pathfinder.find({result: clusters,end: endPoint}))
   .then( (sortedClusters) => Promise.all( sortedClusters.paths.map( (path) => getSplines(path))))
-  .then( (splines) => {
-    res.json(splines)
-  })
-  .catch( (error) => {
-    res.status(500).json({err: error})
-  })
+  .then( (splines) => res.json(splines))
+  .catch( (error) => res.status(500).json({err: error}))
 })
