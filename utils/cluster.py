@@ -6,7 +6,6 @@ import math
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.preprocessing import StandardScaler
-import hdbscan
 
 if '--gui' in sys.argv:
     import matplotlib.pyplot as plt
