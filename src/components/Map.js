@@ -4,6 +4,7 @@ import { setLocation, setZoomLevel, toggleLayer, uploadPoint, getLocation } from
 import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
+import BusIcon from 'react-icons/lib/io/android-bus'
 
 import Page from './Page'
 import style from '../styles/Map.scss'
@@ -39,17 +40,18 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
         elems.push(<Circle key={point.id} center={{ lat: points.latitude, lon: points.longitude }} color={getColor(points.id)} radius={20} weight={1} opacity={0.5}/>)
       })
     }
-    return elems
+    return elems.join('')
   } else {
     return null
   }
 }
 
-const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
+const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
       <button className={clustersEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "clusters")}><ClusterIcon size={24}/></button>
+      <button className={routesEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "routes")}><BusIcon size={24}/></button>
     </div>
     <div className={style.sidebar + ' ' + style.bottom}>
       <button onClick={getAndSetLocation}>
@@ -79,7 +81,7 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
-          { routes ? routes.map(route => {
+          { routes && routesEnabled ? routes.map(route => {
             if (route.id) {
               return (<Polyline positions={route.positions} key={route.id} color={getRandomColor(route.id)} weight={2} smoothFactor={1} />)
             }
@@ -99,6 +101,7 @@ const mapStateToProps = (state) => ({
   peopleEnabled: state.preferences.layers.people,
   clustersEnabled: state.preferences.layers.clusters,
   userEnabled: state.preferences.layers.user,
+  routesEnabled: state.preferences.layers.routes,
   routes: state.preferences.routes
 })
 

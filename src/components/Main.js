@@ -6,7 +6,6 @@ import { setActiveApp, setLocation, loadAllDataPoints, loadAllClusters, loadAllR
 import style from '../styles/Main.scss'
 import MapIcon from 'react-icons/lib/io/ios-location'
 import SettingsIcon from 'react-icons/lib/io/ios-cog'
-import BusIcon from 'react-icons/lib/io/android-bus'
 
 import 'leaflet/dist/leaflet.css'
 
@@ -28,11 +27,6 @@ class Main extends React.Component {
             className={style.link + (this.props.activeApp == 'map' ? ' ' + style.activeApp : '')}>
             <MapIcon size={24} />
             <span>Map</span>
-          </Link>
-          <Link to="/buses"
-            className={style.link + (this.props.activeApp == 'buses' ? ' ' + style.activeApp : '')}>
-            <BusIcon size={24} />
-            <span>Transit</span>
           </Link>
           <Link to="/settings"
             className={style.link + (this.props.activeApp == 'settings' ? ' ' + style.activeApp : '')}>

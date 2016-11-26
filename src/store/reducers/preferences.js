@@ -4,7 +4,8 @@ const preferences = (state = {
   layers: {
     'people': false,
     'clusters': false,
-    'user': false
+    'user': false,
+    'routes': false
   },
   activeApp: 'map',
   routes: []
