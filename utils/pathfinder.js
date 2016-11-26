@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch'
 module.exports = {
   find(json) {
     return new Promise( (resolve, reject) => {
+      if (json.result.length === 0) reject({err: "No data given to clusters.calculate"})
       const shell = spawn('python', [__dirname + '/pathfinder.py', JSON.stringify(json)])
       var pathData = ""
       shell.stdout.on('data', (data) => {
@@ -16,6 +17,7 @@ module.exports = {
 
       shell.on('close', (code) => {
         if (code != 0) reject({err: code})
+        if (pathData === "") reject({err: "No path data found"})
         resolve(JSON.parse(pathData))
       })
     })
