@@ -21,4 +21,7 @@ Our project for Junction 2016 aims to solve the problem by using [Sohjoa](http:/
 TBA, use your imagination
 
 ##The tech
-TBA, check the code
+1) Clustering user data  
+2) Sjukstra the clusters  
+3) Routing with EMBERS  
+4) Data visualisation with leaflet  
