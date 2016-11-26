@@ -5,12 +5,15 @@ import json
 import sys
 import time
 import os
+from cachetools import LRUCache
 
 key = os.environ['GMAP_API']
 if not key:
 	sys.stderr.write("Give API key")
 	sys.exit(1)
 gmaps = googlemaps.Client(key=key)
+
+cache = LRUCache(maxsize=1024)
 
 def log(s):
 	pass
@@ -23,23 +26,31 @@ def cost(time, count):
 	return time/(count*count)
 
 def timeDistance(p1, p2):
-	global gmaps
+	global gmaps, cache
 	#from math import sqrt, pow
 	#return sqrt(pow(p1["latitude"] - p2["latitude"], 2) + pow(p1["longitude"] - p2["longitude"], 2))
 
-	now = datetime.now()
-	res = gmaps.directions("%s %s" % (p1['location']['latitude'], p1['location']['longitude']),
-							"%s %s" % (p2['location']['latitude'], p2['location']['longitude']),
-							mode="driving",
-							departure_time=now
-							)
-	#log(res)
-	#log("%s %s" % (p1['location']['latitude'], p1['location']['longitude']))
-	#log("%s %s" % (p2['location']['latitude'], p2['location']['longitude']))
-	try:
-		return res[0]['legs'][0]['duration_in_traffic']['value']
-	except:
-		return None
+	cacheKey = "%s %s" % (p1['location']['latitude'], p1['location']['longitude'])
+	cacheKey = "%s %s %s" % (cacheKey, p2['location']['latitude'], p2['location']['longitude'])
+	if cacheKey in cache:
+		return cache[cacheKey]
+	else:
+		now = datetime.now()
+		res = gmaps.directions("%s %s" % (p1['location']['latitude'], p1['location']['longitude']),
+								"%s %s" % (p2['location']['latitude'], p2['location']['longitude']),
+								mode="driving",
+								departure_time=now
+								)
+		#log(res)
+		#log("%s %s" % (p1['location']['latitude'], p1['location']['longitude']))
+		#log("%s %s" % (p2['location']['latitude'], p2['location']['longitude']))
+		try:
+			time = res[0]['legs'][0]['duration_in_traffic']['value']
+			cache[cacheKey] = time
+			return time
+		except:
+			cache[cacheKey] = None
+			return None
 
 def sjuktra(stops, end):
 	MAX_PEOPLE = 12
@@ -78,7 +89,7 @@ def sjuktra(stops, end):
 			log("[%s] time: %s" % (str(i), str(i_time)))
 
 			if dist[u_idx]['date'] != None and dist[u_idx]['date'] < i_time:
-				log("> time")
+				log("> time") 
 				continue
 
 			if current_count >= 12:
@@ -99,7 +110,7 @@ def sjuktra(stops, end):
 
 			free_space = 12 - current_count
 			log("Free: %i" % free_space)
-
+			
 			take_count = min(i_count, free_space)
 			count = current_count + take_count
 
@@ -134,31 +145,39 @@ def sjuktra(stops, end):
 def pathfind(stops, end):
 	routes = []
 
+	def addPathToRoute(route, stops, dist, src, dst):
+		c = dist[src]['count'] - dist[dst]['count']
+		route.append({
+			"location": {
+				"longitude": stops[src]['location']['longitude'],
+				"latitude": stops[src]['location']['latitude']
+			},
+			"count": c
+		})
+		stops[src]['n_points'] = stops[src]['n_points'] - c
+
 	while len(stops) > 0:
 		dist, prev = sjuktra(stops, end)
 
-		m = None
+		best = None
 		for i in dist:
-			if (m == None or dist[i]['cost'] < dist[m]['cost']) and i != 'end':
-				m = i
+			if (best == None or dist[i]['cost'] < dist[best]['cost']) and i != 'end':
+				best = i
 
 
 		route = []
-		idx = []
-		i = m
-		#log(m)
+		i = best
+		prev_i = None
 		while i != 'end':
-			route.append({
-				"location": {
-					"longitude": stops[i]['location']['longitude'],
-					"latitude": stops[i]['location']['latitude']
-				},
-				"count": dist[i]['count']
-			})
-			idx.append(i)
+			stop = stops[i]
+			
+			if prev_i:
+				addPathToRoute(route, stops, dist, prev_i, i)
 
+			prev_i = i
 			i = prev[i]
 
+		addPathToRoute(route, stops, dist, prev_i, i)
 		route.append({
 			"location": {
 				"longitude": end['location']['longitude'],
@@ -166,9 +185,9 @@ def pathfind(stops, end):
 			},
 			"count": 0
 		})
-		routes.append(route)
 
-		stops = [i for j, i in enumerate(stops) if j not in idx]
+		routes.append(route)
+		stops = [i for j, i in enumerate(stops) if stops[j]['n_points'] > 0]
 
 	return routes
 
