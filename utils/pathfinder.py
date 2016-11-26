@@ -4,8 +4,13 @@ from datetime import datetime
 import json
 import sys
 import time
+import os
 
-gmaps = googlemaps.Client(key='AIzaSyD-EkE2N4ULYVKqvd3RpHiy-gQeAVT2fNo')
+key = os.environ['GMAP_API']
+if not key:
+	sys.stderr.write("Give API key")
+	sys.exit(1)
+gmaps = googlemaps.Client(key=key)
 
 def log(s):
 	pass
