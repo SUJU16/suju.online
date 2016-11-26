@@ -70,7 +70,9 @@ def sjuktra(stops, end):
 		unvisited.remove(u_idx)
 
 		log("Smallest: " + str(u_idx))
+		log("Unvisited: %s" % str(unvisited))
 		for i in unvisited:
+			log("--Handle %i" % i)
 			i_count = stops[i]['n_points']
 			i_time = stops[i]['date']
 			current_count = dist[u_idx]['count']
@@ -78,8 +80,8 @@ def sjuktra(stops, end):
 			log("[%s] count: %s" % (str(i), str(i_count)))
 			log("[%s] time: %s" % (str(i), str(i_time)))
 
-			if dist[u_idx]['date'] != None and dist[u_idx]['date'] < i_time:
-				log("> time") 
+			if dist[u_idx]['date'] != None and abs(dist[u_idx]['date'] - i_time) > TIMERANGE:
+				log("> time: %i" % dist[u_idx]['date']) 
 				continue
 
 			if current_count >= MAX_PEOPLE:
@@ -121,7 +123,7 @@ def sjuktra(stops, end):
 				prev[i] = u_idx
 
 				log("Take [%s] -> [%s]" % (str(u_idx), str(i)))
-
+			log("")
 	log(json.dumps(dist))
 	log(json.dumps(prev))
 
@@ -143,6 +145,7 @@ def pathfind(stops, end):
 		stops[src]['n_points'] = stops[src]['n_points'] - c
 
 	while len(stops) > 0:
+		log("--- Calc ----")
 		dist, prev = sjuktra(stops, end)
 
 		best = None
