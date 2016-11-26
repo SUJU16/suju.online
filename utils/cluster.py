@@ -100,7 +100,8 @@ if GUI:
     for i in range(len(asd)):
         ax.scatter(asd[i][0], asd[i][1], asd[i][2], marker='o', c='black', s=500)
 
-jsonData = []
+jsonClusters = []
+jsonPoints = []
 for i in range(len(clusters)):
     points = clusters[i]["coords"]
     mean = np.array(points).mean(axis=0)
@@ -108,17 +109,19 @@ for i in range(len(clusters)):
     deltas = np.array(points) - np.mean(points,axis=0,keepdims=True)
     deltas = [dist([0,0,0],[x,y,0]) for x,y,_,_ in deltas]
     radius = np.max(deltas)
-
-    cluster = {'n_points': len(points), 'date': mean[2],
+    
+    [jsonPoints.append({'id': int(x[3]), 'cluster_id': i}) for x in points]
+    cluster = {'id': i, 'n_points': len(points), 'date': mean[2],
         'location': {'latitude': mean[0], 'longitude': mean[1]},
-        'points': [int(x[3]) for x in points], 'radius': radius}
+        'radius': radius}
     
 
     if GUI:
         ax.scatter(mean[0], mean[1], mean[2], marker='x', c='black', s=500)
-    jsonData.append(cluster)
+    jsonClusters.append(cluster)
 
-print(json.dumps(jsonData, indent=4, sort_keys=True))
+
+print(json.dumps({'clusters': jsonClusters, 'points': jsonPoints}, sort_keys=True))
 
 if GUI:
     plt.show()
