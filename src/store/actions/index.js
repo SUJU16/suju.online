@@ -126,5 +126,6 @@ export function loadAllClusters() {
       for (var i in clusters) {
         dispatch(addCluster(clusters[i]))
       }
+    })
   }
 }
