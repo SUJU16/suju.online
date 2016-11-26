@@ -18,6 +18,11 @@ export const setZoomLevel = (e) => ({
   zoomLevel: e.target._animateToZoom //haha
 })
 
+export const toggleLayer = (layerId) => ({
+  type: 'TOGGLE_LAYER',
+  layerId
+})
+
 export const setCenter = (e) => ({
   type: 'SET_CENTER',
   point: e.target._lastCenter

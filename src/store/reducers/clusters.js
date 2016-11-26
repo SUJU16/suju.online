@@ -6,7 +6,7 @@ const cluster = (state, action) => {
         timestamp: action.date,
         latitude: action.location.latitude,
         longitude: action.location.longitude,
-        radius: action.n_points
+        size: action.n_points
       }
     case 'ADD_DATAPOINT':
       return action.data

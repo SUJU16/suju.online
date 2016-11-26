@@ -1,6 +1,9 @@
+@import '_constants';
+
 .container {
   flex: 1;
   display: flex;
+  flex-direction: row-reverse;
 }
 
 .map {
@@ -10,4 +13,35 @@
 
 .title {
   flex: 1;
+}
+
+.sidebar {
+  position: absolute;
+  top: 50vh;
+  z-index: 999;
+  background-color: lighten($background, 4);
+  border: 2px solid lighten($background, 4);
+  background-color: transparent;
+  // opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border-right: none;
+  overflow: hidden;
+
+  button {
+    // border-radius: 0.5rem;
+    // overflow: hidden;
+    border: none;
+    background-color: lighten($background, 4);
+    color: lighten($blueblack, 20);
+    padding: 0.5rem;
+  }
+}
+
+.buttonEnabled {
+  * {
+    color: lighten($blueblack, 80);
+  }
 }
