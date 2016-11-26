@@ -72,7 +72,6 @@ def sjuktra(stops, end):
 		log("Smallest: " + str(u_idx))
 		log("Unvisited: %s" % str(unvisited))
 		for i in unvisited:
-			log("--Handle %i" % i)
 			i_count = stops[i]['n_points']
 			i_time = stops[i]['date']
 			current_count = dist[u_idx]['count']
@@ -145,7 +144,6 @@ def pathfind(stops, end):
 		stops[src]['n_points'] = stops[src]['n_points'] - c
 
 	while len(stops) > 0:
-		log("--- Calc ----")
 		dist, prev = sjuktra(stops, end)
 
 		best = None
@@ -186,7 +184,7 @@ def main():
 	data = sys.argv[1]
 	data = json.loads(data)
 
-	paths = pathfind(data['clusters'], data['end'])
+	paths = pathfind(data['result']['clusters'], data['end'])
 	print(json.dumps({'paths': paths}))
 
 main()
