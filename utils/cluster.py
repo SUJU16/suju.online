@@ -52,6 +52,9 @@ else:
     
     coords = np.array(coords)
 
+if (len(coords) < 1):
+    sys.exit(0)
+
 clusters = [{'id': 0, 'coords': coords}]
 kissa = False
 initDist = 250
@@ -93,9 +96,6 @@ while not kissa:
 for i in clusters:
     for j in range(len(i["coords"])):
         i["coords"][j][2] *= (float(1)/timeScale)
-
-#for i in range(len(asd)):
-#    asd[2] *= (float(1)/timeScale)
 
 if GUI:
     colors = plt.cm.Spectral(np.linspace(0,1,len(clusters)))
