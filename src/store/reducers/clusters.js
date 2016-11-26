@@ -7,18 +7,34 @@ const cluster = (state, action) => {
         latitude: action.ltd,
         longitude: action.lon
       }
+    case 'ADD_DATAPOINT':
+      return action.data
     default:
       return state
   }
 }
 
-const clusters = (state = [], action) => {
+const clusters = (state = {
+    datapoints: [],
+    clusters: []
+  }, action) => {
   switch (action.type) {
     case 'ADD_CLUSTER':
-      return [
+      return {
         ...state,
-        cluster(undefined, action)
-      ]
+        clusters: [
+          ...state.clusters,
+          cluster(undefined, action)
+        ]
+      }
+    case 'ADD_DATAPOINT':
+      return {
+        ...state,
+        datapoints: [
+          ...state.datapoints,
+          cluster(undefined, action)
+        ]
+      }
     default:
       return state
   }
