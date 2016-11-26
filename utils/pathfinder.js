@@ -1,12 +1,13 @@
 import {spawn} from 'child_process'
+import fetch from 'isomorphic-fetch'
 
 module.exports = {
   find(json) {
     return new Promise( (resolve, reject) => {
       const shell = spawn('python', [__dirname + '/pathfinder.py', JSON.stringify(json)])
-      var pathData
+      var pathData = ""
       shell.stdout.on('data', (data) => {
-        pathData = JSON.parse(data)
+        pathData += data
       })
 
       shell.stderr.on('data', (data) => {
@@ -15,8 +16,27 @@ module.exports = {
 
       shell.on('close', (code) => {
         if (code != 0) reject({err: code})
-        resolve(pathData)
+        resolve(JSON.parse(pathData))
       })
+    })
+  },
+
+  getSpline(a, b) {
+    const url = `https://data.embers.city/api/routing?start_point=${a.latitude},${a.longitude}&end_point=${b.latitude},${b.longitude}&is_sorted=true&is_do_instructions=true`
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Token ' + process.env.EMBERSTOKEN
+      }
+    }
+    return new Promise( (resolve, reject) => {
+      fetch(url, options)
+      .then( (reqData) => {
+        reqData.json()
+        .then( (data) => resolve(data))
+        .catch( (error) => reject(error))
+      })
+      .catch( (error) => reject(error))
     })
   }
 }

@@ -24,24 +24,24 @@ def cost(time, count):
 def timeDistance(p1, p2):
 	global gmaps, cache
 
-	cacheKey = "%s %s" % (p1['location']['latitude'], p1['location']['longitude'])
-	cacheKey = "%s %s %s" % (cacheKey, p2['location']['latitude'], p2['location']['longitude'])
+	cache_key = "%s %s" % (p1['latitude'], p1['longitude'])
+	cache_key = "%s %s %s" % (cache_key, p2['latitude'], p2['longitude'])
 
-	if cacheKey in cache:
-		return cache[cacheKey]
+	if cache_key in cache:
+		return cache[cache_key]
 	else:
 		now = datetime.now()
-		res = gmaps.directions("%s %s" % (p1['location']['latitude'], p1['location']['longitude']),
-								"%s %s" % (p2['location']['latitude'], p2['location']['longitude']),
+		res = gmaps.directions("%s %s" % (p1['latitude'], p1['longitude']),
+								"%s %s" % (p2['latitude'], p2['longitude']),
 								mode="driving",
 								departure_time=now
 								)
 		try:
 			time = res[0]['legs'][0]['duration_in_traffic']['value']
-			cache[cacheKey] = time
+			cache[cache_key] = time
 			return time
 		except:
-			cache[cacheKey] = None
+			cache[cache_key] = None
 			return None
 
 def sjuktra(stops, end):
@@ -72,7 +72,6 @@ def sjuktra(stops, end):
 		log("Smallest: " + str(u_idx))
 		log("Unvisited: %s" % str(unvisited))
 		for i in unvisited:
-			log("--Handle %i" % i)
 			i_count = stops[i]['n_points']
 			i_time = stops[i]['date']
 			current_count = dist[u_idx]['count']
@@ -112,7 +111,9 @@ def sjuktra(stops, end):
 			i_cost = dist[u_idx]['cost']*(current_count*current_count)/(count*count) + cost(t_time, count)
 			log("Cost: %i" % i_cost)
 
-			if i_cost < dist[i]['cost'] and dist[u_idx]['count'] < MAX_PEOPLE and (abs(time - i_time) < TIMERANGE or dist[u_idx]['date'] == None):
+			start_cost = cost(timeDistance(end, stops[i]), count)
+
+			if i_cost+start_cost < dist[i]['cost'] and dist[u_idx]['count'] < MAX_PEOPLE and (abs(time - i_time) < TIMERANGE or dist[u_idx]['date'] == None):
 				dist[i]['cost'] = i_cost
 				dist[i]['count'] = count
 
@@ -135,17 +136,14 @@ def pathfind(stops, end):
 	def addPathToRoute(route, stops, dist, src, dst):
 		c = dist[src]['count'] - dist[dst]['count']
 		route.append({
-			"location": {
-				"longitude": stops[src]['location']['longitude'],
-				"latitude": stops[src]['location']['latitude']
-			},
+			"longitude": stops[src]['longitude'],
+			"latitude": stops[src]['latitude'],
 			"count": c,
 			"date": dist[src]['date'],
 		})
 		stops[src]['n_points'] = stops[src]['n_points'] - c
 
 	while len(stops) > 0:
-		log("--- Calc ----")
 		dist, prev = sjuktra(stops, end)
 
 		best = None
@@ -169,10 +167,8 @@ def pathfind(stops, end):
 		addPathToRoute(route, stops, dist, prev_i, i)
 		end_time = dist[prev_i]['date'] + timeDistance(stops[prev_i], end)
 		route.append({
-			"location": {
-				"longitude": end['location']['longitude'],
-				"latitude": end['location']['latitude']
-			},
+			"longitude": end['longitude'],
+			"latitude": end['latitude'],
 			"count": 0,
 			"date": end_time
 		})
@@ -186,7 +182,7 @@ def main():
 	data = sys.argv[1]
 	data = json.loads(data)
 
-	paths = pathfind(data['clusters'], data['end'])
+	paths = pathfind(data['result']['clusters'], data['end'])
 	print(json.dumps({'paths': paths}))
 
 main()

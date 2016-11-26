@@ -4,9 +4,9 @@ module.exports = {
   calculate(json) {
     return new Promise( (resolve, reject) => {
       const shell = spawn('python', [__dirname + '/cluster.py', JSON.stringify(json)])
-      var clusterData
+      var clusterData = ""
       shell.stdout.on('data', (data) => {
-        clusterData = JSON.parse(data)
+        clusterData += data
       })
 
       shell.stderr.on('data', (data) => {
@@ -15,7 +15,7 @@ module.exports = {
 
       shell.on('close', (code) => {
         if (code != 0) reject({err: code})
-        resolve(clusterData)
+        resolve(JSON.parse(clusterData))
       })
     })
   }

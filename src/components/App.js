@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, hashHistory } from 'react-router'
+import { Redirect, Router, Route, hashHistory } from 'react-router'
 
 import logo from '../assets/logo.png'
 import '../styles/App.scss'
@@ -12,6 +12,7 @@ class App extends React.Component {
   render() {
     return (
       <Router history={hashHistory}>
+        <Redirect from="/" to="map" />
         <Route path="/" component={Main}>
           <Route path="map" component={MapPage}/>
           <Route path="settings" component={SettingsPage}/>

@@ -37,9 +37,10 @@ if GUI:
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
+timeScale = float(1)/(15*60)*1
 coords = np.array([])
 if len(sys.argv) > 1:
-    coords = np.array([[float(x["latitude"]), float(x["longitude"]),float(x["date"])/1800*1, x["id"]]
+    coords = np.array([[float(x["latitude"]), float(x["longitude"]),float(x["date"])*timeScale, x["id"]]
         for x in json.loads(sys.argv[1])])
 else:
     coords = []
@@ -78,7 +79,7 @@ while not kissa:
             del clusters[i]
    
 
-    initDist = initDist * 0.9
+    initDist = initDist * 0.8
     for i in range(len(clusters)):
         if len(clusters[i]["coords"]) > 12:
             koira = False
@@ -89,6 +90,13 @@ while not kissa:
         break
     kissa=koira
 
+for i in clusters:
+    for j in range(len(i["coords"])):
+        i["coords"][j][2] *= (float(1)/timeScale)
+
+for i in range(len(asd)):
+    asd[2] *= (float(1)/timeScale)
+
 if GUI:
     colors = plt.cm.Spectral(np.linspace(0,1,len(clusters)))
     for i in range(len(clusters)):
@@ -97,8 +105,8 @@ if GUI:
             coord = clusters[i]["coords"][j]
             ax.scatter(coord[0], coord[1], coord[2], marker='o',
                 c=c, s=500)
-    for i in range(len(asd)):
-        ax.scatter(asd[i][0], asd[i][1], asd[i][2], marker='o', c='black', s=500)
+#    for i in range(len(asd)):
+#        ax.scatter(asd[i][0], asd[i][1], asd[i][2], marker='o', c='black', s=500)
 
 jsonClusters = []
 jsonPoints = []
@@ -106,13 +114,14 @@ for i in range(len(clusters)):
     points = clusters[i]["coords"]
     mean = np.array(points).mean(axis=0)
 
-    deltas = np.array(points) - np.mean(points,axis=0,keepdims=True)
-    deltas = [dist([0,0,0],[x,y,0]) for x,y,_,_ in deltas]
-    radius = np.max(deltas)
-    
-    [jsonPoints.append({'id': int(x[3]), 'cluster_id': i}) for x in points]
+    maxdist = 0
+    for j in points:
+        maxdist = max(maxdist, dist([j[0], j[1], 1], [mean[0], mean[1], 1]))
+
+    radius = maxdist
+    [jsonPoints.append({'id': int(x[3]), 'cluster_id': i, 'latitude': x[0], 'longitude': x[1]}) for x in points]
     cluster = {'id': i, 'n_points': len(points), 'date': mean[2],
-        'location': {'latitude': mean[0], 'longitude': mean[1]},
+        'latitude': mean[0], 'longitude': mean[1],
         'radius': radius}
     
 
@@ -122,6 +131,5 @@ for i in range(len(clusters)):
 
 
 print(json.dumps({'clusters': jsonClusters, 'points': jsonPoints}, sort_keys=True))
-
 if GUI:
     plt.show()
