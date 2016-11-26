@@ -6,7 +6,7 @@ const readRoute = (raw) => {
   return coords
 }
 
-export const getCoordinates = () => {
+export const readRoutes = () => {
   console.log('getCoordinates')
   return routes.map(list => readRoute(list[0]))
 }

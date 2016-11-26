@@ -1,9 +1,10 @@
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
 import clusters from './clusters'
-import { getCoordinates } from '../../utils'
+import { readRoutes } from '../../utils'
 
 var nextClusterId = 0
+var nextRouteId = 0
 
 export const addCluster = (data) => ({
   type: 'ADD_CLUSTER',
@@ -26,9 +27,12 @@ export const toggleLayer = (layerId) => ({
   layerId
 })
 
-export const setCurrentRoute = (route) => ({
-  type: 'SET_CURRENT_ROUTE',
-  route
+export const addRoute = (route) => ({
+  type: 'ADD_ROUTE',
+  route: {
+    id: nextRouteId++,
+    positions: route
+  }
 })
 
 export const setCenter = (e) => ({
@@ -58,11 +62,12 @@ export function loadAllDataPoints() {
   }
 }
 
-export function loadBasicRoute() {
+export function loadAllRoutes() {
   return dispatch => {
-    const route = getCoordinates()
-    console.log(route)
-    dispatch(setCurrentRoute(route))
+    const routes = readRoutes()
+    for (let i in routes) {
+      dispatch(addRoute(routes[i]))
+    }
   }
 }
 
@@ -116,11 +121,11 @@ export const setActiveApp = (id) => ({
 
 export function loadAllClusters() {
   return dispatch => {
-    fetchData('http://localhost:5000/api/cluster')
-    .then(clusters => {
-      for (var i in clusters) {
-        dispatch(addCluster(clusters[i]))
+    // fetchData('http://localhost:5000/api/cluster')
+    // .then(clusters => {
+      for (var i in clusters.clusters) {
+        dispatch(addCluster(clusters.clusters[i]))
       }
-    })
+    // })
   }
 }

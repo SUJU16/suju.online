@@ -19,7 +19,14 @@ const getColor = (id, size = undefined, ) => {
   return colors[id]
 }
 
-const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, currentRoute, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
+const getRandomColor = (id) => {
+  if (!colors[id+'lol']) {
+    colors[id+'lol'] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+  }
+  return colors[id+'lol']
+}
+
+const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routes, setLocation, setZoomLevel, toggleLayer, newPoint, getAndSetLocation }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -59,9 +66,11 @@ const MapView = ({ datapoints, clusters, location, zoomLevel, peopleEnabled, clu
           { userEnabled && location ? (
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
-          { currentRoute ? (
-            <Polyline positions={currentRoute} color={'#216ec8'} weight={2} smoothFactor={1} />
-          ) : null}
+          { routes ? routes.map(route => {
+            if (route.id) {
+              return (<Polyline positions={route.positions} key={route.id} color={getRandomColor(route.id)} weight={2} smoothFactor={1} />)
+            }
+          }) : null}
         </LayerGroup>
       </Map>
     : 'Loading location'}
@@ -76,7 +85,7 @@ const mapStateToProps = (state) => ({
   peopleEnabled: state.preferences.layers.people,
   clustersEnabled: state.preferences.layers.clusters,
   userEnabled: state.preferences.layers.user,
-  currentRoute: state.preferences.currentRoute
+  routes: state.preferences.routes
 })
 
 const mapDispatchToProps = (dispatch) => {

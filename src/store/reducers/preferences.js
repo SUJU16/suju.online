@@ -7,7 +7,7 @@ const preferences = (state = {
     'user': false
   },
   activeApp: 'map',
-  currentRoute: undefined
+  routes: []
 }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_APP':
@@ -23,10 +23,13 @@ const preferences = (state = {
           lon: action.lon
         }
       }
-    case 'SET_CURRENT_ROUTE':
+    case 'ADD_ROUTE':
       return {
         ...state,
-        currentRoute: action.route
+        routes: [
+          ...state.routes,
+          action.route
+        ]
       }
     case 'SET_ZOOM':
       return {
