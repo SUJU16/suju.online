@@ -10,7 +10,7 @@ Made at [Junction 2016](httpwww.hackjunction.com) by Team Suhina:
   Henri Nurmi
 
 ##Inspiration
-Out team members are hyped about Machine Learning and UX. We were intrigued by the Sohjoa virtual bus stops challenge. It allowed us to design a bus service we would love to use ourselves: a cheap but efficient alternative for the taxi/uber. We wanted to hack a bunch of state of the art tech together to show how a dynamic bus service could work.
+Our team members are hyped about Machine Learning and UX. We were intrigued by the Sohjoa virtual bus stops challenge. It allowed us to design a bus service we would love to use ourselves: a cheap but efficient alternative for the taxi/uber. We wanted to hack a bunch of state of the art tech together to show how a dynamic bus service could work.
 
 ##The problem
 Event organizers have trouble getting their attendees to the event venue. Public transportation may not be enough and organizing custom transportation is expensive and time-consuming. The best practice for custom transportation so far is to organize a route from a pre-defined point X to the venue using a pre-defined schedule. The customers will still have to travel to point X before they can use the arranged transportation. They will have to schedule their day based on the transportation's schedule. If they don't want to deal with these problems they can choose to use their own car or get a taxi/UBER, which gets expensive really fast.  
