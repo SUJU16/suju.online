@@ -1,5 +1,6 @@
 #SUJU16 
 [suju.online](https://suju.online)  
+For the telegram bot message SujuBot (mobile only - post location to converse)
 **THE multi-parameter route optimizer for self-driving buses**
 
 Made at [Junction 2016](httpwww.hackjunction.com) by Team Suhina:   
