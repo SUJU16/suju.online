@@ -153,6 +153,7 @@ def pathfind(stops, end):
 
 
 		route = []
+		idx = []
 		i = best
 		prev_i = None
 		while i != 'end':
@@ -160,11 +161,14 @@ def pathfind(stops, end):
 			
 			if prev_i:
 				addPathToRoute(route, stops, dist, prev_i, i)
+				idx.append(stops[prev_i]['id'])
 
 			prev_i = i
 			i = prev[i]
 
 		addPathToRoute(route, stops, dist, prev_i, i)
+		idx.append(stops[prev_i]['id'])
+
 		end_time = dist[prev_i]['date'] + timeDistance(stops[prev_i], end)
 		route.append({
 			"longitude": end['longitude'],
@@ -172,6 +176,9 @@ def pathfind(stops, end):
 			"count": 0,
 			"date": end_time
 		})
+
+		for i in route:
+			i["cluster_id"] = idx
 
 		routes.append(route)
 		stops = [i for j, i in enumerate(stops) if stops[j]['n_points'] > 0]
