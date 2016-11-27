@@ -50,7 +50,7 @@
 @keyframes from_bottom {
     0%   {opacity: 0.0; margin-bottom: -5rem;}
     30%   {opacity: 0.0}
-    100% {opacity: 1.0; margin-bottom: 1.4rem;}
+    100% {opacity: 1.0; margin-bottom: 0rem;}
 }
 
 .topbar {
@@ -64,11 +64,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  margin-bottom: 1.4rem;
+  // margin-bottom: 1.4rem;
   animation-name: from_bottom;
   animation-duration: 0.5s;
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
+  padding-bottom: 1.2rem;
   // border-radius: 0.5rem;
 
   button {
@@ -82,15 +83,23 @@
     }
   }
 
+  @media(max-width: $break-small) {
+    * {
+      font-size: 1rem;
+    }
+
+    input {
+      display: none;
+    }
+  }
+
   input {
     width: 80%;
   }
 }
 
 .bar {
-  background-color: lighten($background, 4);
-  border: 2px solid lighten($background, 4);
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -105,13 +114,13 @@
 
   button {
     border: 2px solid lighten($background, 20);
-    border-radius: 0.5rem;
+    border-radius: 50%;
     background-color: transparent;
     color: lighten($blueblack, 20);
     padding: 0.5rem;
     margin: 0.3rem;
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 400;
 
     div {
       display: inline-block;
