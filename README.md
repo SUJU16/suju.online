@@ -18,7 +18,7 @@ Event organizers have trouble getting their attendees to the event venue. Public
 Technically, this kind of problem is often referred to as the last mile problem. We wanted to tackle a variation of this: the first mile problem. Even with just some tens of passengers there are millions of possible routes between them, let alone when a third variable, time, is taken into account.
 
 ##The solution
-Our project for Junction 2016 aims to solve the transportation problem by using [Sohjoa](http://sohjoa.fi/) to organize dynamic and cost controlled custom transportation. Our concept is a tool for event organizers and public transportation decision makers that allows them to design dynamic routing for the self-driving bus. If the surroundings of a location are pre-scanned the bus is can plan and drive routes that are planned on-the-go.  Our tool makes the required optimizations to the route, chooses a smart way to transport people from their desired pick-up location and tells Sohjoa which route and schedule to follow during the transportation. 
+Our project for Junction 2016 aims to solve the transportation problem by using [Sohjoa](http://sohjoa.fi/) to organize dynamic and cost controlled custom transportation. Our concept is a tool for event organizers and public transportation decision makers that allows them to design dynamic routing for the self-driving bus. If the surroundings of a location are pre-scanned the bus can plan and drive routes that are planned on-the-go.  Our tool makes the required optimizations to the route, chooses a smart way to transport people from their desired pick-up location and tells Sohjoa which route and schedule to follow during the transportation. 
 
 ##The use cases  
 1) Event transportation    
