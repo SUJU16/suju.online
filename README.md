@@ -42,6 +42,8 @@ The service is running on a node.js server, with React and Redux used for the we
 ##Accomplishments  
 The project required long hours and took our very best effort. In the end, even though at times we had problems and didn't always feel like we were progressing, we were able to create a prototype of a service that helps better imagine what is possible and how shared transportation could work. 
 
+Our main challenges were parametrizing and developing algorithms to solve the initial routing problem, we had to develop them almost from scratch. Integrating our different parts to a seamless and consistent service took lots of time and effort. Lastly, it was difficult to prioritize and scope a presentable MVP, the problem was complex and had numerous points of possible failure.
+
 ##What's next
 Our project is left open ended. It could be taken towards multiple of development directions, but only time will tell. We hope that during the judging phase we will get inspiring suggestions or feedback on our project.
 
