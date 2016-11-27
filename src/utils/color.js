@@ -1,4 +1,4 @@
-module.exports = () => new (class {
+module.exports = (() => new (class {
     getColorString(id, s, b) {
         let c = this.getColor(id, s, b);
         return 'hsl('+c.h+','+c.s+'%,'+c.l+'%)';
@@ -16,4 +16,4 @@ module.exports = () => new (class {
         let x = Math.sin(seed*seed) * 100000;
         return x - Math.floor(x);
     }
-})
+}))()

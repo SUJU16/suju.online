@@ -24,17 +24,47 @@
   }
 }
 
-.middleRight {
-  right: 16rem;
-
-  @media(max-width: $break-small) {
-    bottom: 14rem;
-  }
-  @media(min-width: $break-large) {
-    top: 50vh;
-  }
+.topbarContainer {
+  width: 100%;
+  position: absolute;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.1rem;
 }
 
+@keyframes example {
+    0%   {opacity: 0.0; margin-top: -5rem;}
+    30%   {opacity: 0.0}
+    100% {opacity: 1.0; margin-top: 1.4rem;}
+}
+
+.topbar {
+  margin-top: 1.4rem;
+  background-color: lighten($background, 4);
+  border: 2px solid lighten($background, 4);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  animation-name: example;
+  animation-duration: 0.5s;
+
+  button {
+    border: 2px solid lighten($background, 20);
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: lighten($blueblack, 20);
+    padding: 0.5rem;
+    margin: 0.3rem;
+    font-size: 1rem;
+    font-weight: 300;
+
+    div {
+      display: inline-block;
+      min-width: 1.2rem;
+    }
+  }
+}
 
 .bottom {
   @media(max-width: $break-small) {

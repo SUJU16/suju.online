@@ -6,6 +6,7 @@ import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
 import BusIcon from 'react-icons/lib/io/android-bus'
 
+import color from '../utils/color'
 import Page from './Page'
 import style from '../styles/Map.scss'
 
@@ -13,18 +14,28 @@ import { Map, TileLayer, LayerGroup, Circle, Polyline } from 'react-leaflet';
 
 var colors = {}
 
-const getColor = (id, size = undefined, ) => {
-  if (!colors[id] && size) {
-    colors[id] = `rgb(${Math.floor(size)}, ${Math.floor(0)}, ${Math.floor(255 - size)})`
-  }
-  return colors[id]
+const getColor = (id/*, size = undefined*/) => {
+  // if (!colors[id] && size) {
+  //   colors[id] = `rgb(${Math.floor(size)}, ${Math.floor(0)}, ${Math.floor(255 - size)})`
+  // }
+  // return colors[id]
+  return color.getColorString(id, 1.0, 0.6)
 }
 
 const getRandomColor = (id) => {
-  if (!colors[id+'lol']) {
-    colors[id+'lol'] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+  // if (!colors[id+'lol']) {
+  //   colors[id+'lol'] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+  // }
+  // return colors[id+'lol']
+  return color.getColorString(id, 1.0, 0.6)
+}
+
+const getRouteButtonStyle = (id, visible) => {
+  const colorString = visible ? color.getColorString(id, 1.0, 0.6) : '#656565'
+  return {
+    color: colorString,
+    borderColor: colorString
   }
-  return colors[id+'lol']
 }
 
 const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
@@ -32,12 +43,12 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
     var elems = []
     if (clusters) {
       clusters.map(cluster => {
-        elems.push(<Circle key={cluster.id} center={{ lat: cluster.latitude, lon: cluster.longitude }} color={getColor(cluster.id, cluster.radius)} radius={cluster.radius} weight={1} opacity={0.5}/>)
+        elems.push(<Circle key={cluster.id} center={{ lat: cluster.latitude, lon: cluster.longitude }} color={getColor(cluster.id, cluster.radius)} radius={cluster.radius} weight={1} opacity={0.5} fillOpacity={0.3}/>)
       })
     }
     if (clustered_datapoints) {
       clustered_datapoints.map(point => {
-        elems.push(<Circle key={point.id} center={{ lat: point.latitude, lon: point.longitude }} color={getColor(point.cluster_id)} radius={20} weight={1} opacity={0.5}/>)
+        elems.push(<Circle key={point.id} center={{ lat: point.latitude, lon: point.longitude }} color={getColor(point.cluster_id)} radius={20} weight={1} opacity={0.5} fillOpacity={0.8}/>)
       })
     }
     return elems
@@ -53,11 +64,13 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       <button disabled={!clusters} className={clustersEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "clusters")}><ClusterIcon size={24}/></button>
       <button disabled={!routes} className={routesEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "routes")}><BusIcon size={24}/></button>
     </div>
-    { routes ?
-      <div className={style.sidebar}>
+    { routes && routesEnabled ?
+      <div className={style.topbarContainer}>
+        <div className={style.topbar}>
           { routes.map(route => {
-            return (<button onClick={toggleRoute.bind(this, route.id)} key={route.id}>{ route.id }</button>)
+            return (<button style={getRouteButtonStyle(route.id, route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}><div>{route.id}</div></button>)
           }) }
+        </div>
       </div>
       : ''
     }

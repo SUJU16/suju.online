@@ -13,7 +13,7 @@
 }
 
 .navigator {
-  z-index: 100;
+  z-index: 999;
   background-color: lighten($background, 4);
   border-top: 2px solid lighten($background, 8);
   color: $bluewhite;
