@@ -116,8 +116,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       <Map className={style.map}
         center={location}
         zoom={zoomLevel}
-        onZoom={setZoomLevel}
-        onClick={newPoint}>
+        onZoom={setZoomLevel}>
         <LayerGroup>
           <TileLayer
             className={style.tileLayer}
