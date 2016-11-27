@@ -84,17 +84,17 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
     { routes && routesEnabled ? (
       <div className={style.verticalContainer + ' ' + style.bottombar}>
         <button onClick={startPlaying}>
-          <PlayIcon size={24} />
+          START
         </button>
         <button onClick={togglePause}>
-          <PauseIcon size={24} />
+          PAUSE
         </button>
         <button onClick={() => {
               togglePause()
               setSliderValue(cluster_min_time)
             }
           }>
-          <StopIcon size={24} />
+          STOP
         </button>
         <ReactNativeSlider
           className={style.slider}
