@@ -22,7 +22,7 @@ Our project for Junction 2016 aims to solve the transportation problem by using 
 
 ##The use cases  
 1) Event transportation    
-Events organize group transportation to boost visitor counts. Opposite to public transportation there is a more clear business model: people bring in money, so it is worth investing money to bring them to the event. Our routing algorithm allows prioritization by cost, which means that people can be transported on a price per visitor basis.   
+Events organize group transportation to boost visitor counts. Doing this in a cost efficient way is what really matters. Unlike public transportation there is a more clear business model: people bring in money, so it is worth investing money to bring them to the event. Our routing algorithm allows prioritization by cost, which means that people can be transported on a price per visitor basis.   
 2) The commuter's first mile  
 Currently public transportation is organized around node points such as railway or metro stations. However, the last (or first) mile or so is often the most unconvinient for the commuter. Busses to less populated areas leave seldomly and can't stop at everyones home. Our service can create efficient routes that transport everyone from and to the general area of their home - adjusting dynamically to demand thus being able to take the shortest route to the destination.  
 
