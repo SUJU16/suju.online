@@ -16,13 +16,15 @@
 }
 
 .middle {
-  right: 0;
-  @media(max-width: $break-small) {
-    bottom: 14rem;
-  }
-  @media(min-width: $break-large) {
-    top: 50vh;
-  }
+  left: 0;
+  -webkit-transform: scaleX(-1); /* Chrome, Safari, Opera */
+  transform: scaleX(-1);
+  // @media(max-width: $break-small) {
+  //   bottom: 14rem;
+  // }
+  // @media(min-width: $break-large) {
+    top: 20vh;
+  // }
 }
 
 .topbarContainer {
@@ -83,13 +85,15 @@
 }
 
 .bottom {
-  right: 0;
-  @media(max-width: $break-small) {
-    bottom: 10rem;
-  }
-  @media(min-width: $break-large) {
-    bottom: 5vh;
-  }
+  left: 0;
+  -webkit-transform: scaleX(-1); /* Chrome, Safari, Opera */
+  transform: scaleX(-1);
+  // @media(max-width: $break-small) {
+  //   bottom: 10rem;
+  // }
+  // @media(min-width: $break-large) {
+    top: 38vh;
+  // }
 }
 
 .sidebar {
