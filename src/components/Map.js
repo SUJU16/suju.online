@@ -15,8 +15,9 @@ import color from '../utils/color'
 import Page from './Page'
 import style from '../styles/Map.scss'
 import {pointInPath} from '../utils/busssimu'
+import junctionLogo from '../assets/junction.png'
 
-import { Map, TileLayer, LayerGroup, Circle, Polyline } from 'react-leaflet';
+import { Map, TileLayer, LayerGroup, Circle, Polyline, Marker, Icon } from 'react-leaflet';
 
 var colors = {}
 
@@ -107,7 +108,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       : ''
     }
     <div className={style.sidebar + ' ' + style.bottom}>
-      <button onClick={getAndSetLocation}>
+      <button className={userEnabled ? style.buttonEnabled : ''} onClick={getAndSetLocation}>
         <NavIcon size={24} />
       </button>
     </div>
@@ -147,6 +148,10 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
               }
             }
           }) : null}
+          <Marker position={location} icon={L.icon({
+              iconUrl: junctionLogo,
+              iconSize: [30, 30]
+          })} />
         </LayerGroup>
       </Map>
       : 'Loading location'}
