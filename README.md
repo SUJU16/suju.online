@@ -27,17 +27,17 @@ Events organize group transportation to boost visitor counts. Opposite to public
 Currently public transportation is organized around node points such as railway or metro stations. However, the last (or first) mile or so is often the most unconvinient for the commuter. Busses to less populated areas leave seldomly and can't stop at everyones home. Our service can create efficient routes that transport everyone from and to the general area of their home - adjusting dynamically to demand thus being able to take the shortest route to the destination.  
 
 ##The tech
-The service is running on a node.js server, with React and Redux used for the web UI. Our algorithms are written in Python so we can leverage state of the art Machine Learning libraries. 
+The service is running on a node.js server, with React and Redux used for the web UI. Our algorithms are written in Python so we can leverage state of the art Machine Learning libraries.  
 1) Data visualisation with leaflet 
- - Intuitive and easy to use planning and visualisation tool for virtual bus stops  
+  - Intuitive and easy to use planning and visualisation tool for virtual bus stops  
 2) Routing with EMBERS  
- - Leveraging Embers route planning to get fast routes between virtual bus stops  
+  - Leveraging Embers route planning to get fast routes between virtual bus stops  
 3) Clustering user data  
- - Recursive DBSCAN machine learning algorithm to reduce the complexity of the 3D spacetime variables.  
+  - Recursive DBSCAN machine learning algorithm to reduce the complexity of the 3D spacetime variables.  
 4) Sjukstra routing 
- - Customized Djikstra that takes into account cost-factors that are specific to electric buses  
+  - Customized Djikstra that takes into account cost-factors that are specific to electric buses  
 5) Telegram end user demo  
- - Example of an end user UI. Helps envision how the service would look for an end user.
+  - Example of an end user UI. Helps envision how the service would look for an end user.
    
 ##Accomplishments  
 The project required long hours and took our very best effort. In the end, even though at times we had problems and didn't always feel like we were progressing, we were able to create a prototype of a service that helps better imagine what is possible and how shared transportation could work. 
