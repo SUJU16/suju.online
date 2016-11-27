@@ -33,7 +33,7 @@ The service is running on a node.js server, with React and Redux used for the we
 2) Routing with EMBERS  
   \- Leveraging Embers route planning to get fast routes between virtual bus stops  
 3) Clustering user data  
-  \- Recursive DBSCAN machine learning algorithm to reduce the complexity of the 3D spacetime variables.  
+  \- Recursive DBSCAN machine learning algorithm to reduce the complexity of the 3D spacetime data.  
 4) Sjukstra routing  
   \- Customized Djikstra that takes into account cost-factors that are specific to electric buses  
 5) Telegram (SujuBot) end user demo  
