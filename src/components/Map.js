@@ -108,7 +108,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       : ''
     }
     <div className={style.sidebar + ' ' + style.bottom}>
-      <button onClick={getAndSetLocation}>
+      <button className={userEnabled ? style.buttonEnabled : ''} onClick={getAndSetLocation}>
         <NavIcon size={24} />
       </button>
     </div>
