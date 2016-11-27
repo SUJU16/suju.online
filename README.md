@@ -27,7 +27,7 @@ Events organize group transportation to boost visitor counts. Opposite to public
 Currently public transportation is organized around node points such as railway or metro stations. However, the last (or first) mile or so is often the most unconvinient for the commuter. Busses to less populated areas leave seldomly and can't stop at everyones home. Our service can create efficient routes that transport everyone from and to the general area of their home - adjusting dynamically to demand thus being able to take the shortest route to the destination.  
 
 ##The tech
-The service is running on a node.js server, with React and Redux used for the web UI. Our algorithms are written in Python so we can leverage state of the art Machine Learning libraries.  
+The service is running on a node.js server, with React and Redux used for the web UI. Our algorithms are written in Python so we can leverage state of the art Machine Learning libraries. 
 1) Data visualisation with leaflet 
  - Intuitive and easy to use planning and visualisation tool for virtual bus stops  
 2) Routing with EMBERS  
