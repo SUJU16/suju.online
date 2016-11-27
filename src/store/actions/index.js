@@ -40,7 +40,9 @@ export const addRoute = (route) => ({
   route: {
     id: nextRouteId++,
     positions: route,
-    visible: true
+    visible: true,
+    positions: route.route,
+    stops: route.stops
   }
 })
 
