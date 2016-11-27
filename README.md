@@ -1,7 +1,6 @@
 #SUJU16 
-[suju.online](https://suju.online)  
-Telegram: SujuBot (mobile only - post location to converse)  
-**THE multi-parameter route optimizer for self-driving buses**
+**THE multi-parameter route optimizer for self-driving buses**  
+Chech it out at [suju.online](https://suju.online)  
 
 Made at [Junction 2016](httpwww.hackjunction.com) by Team Suhina:   
   Matti Parkkila  
@@ -37,7 +36,7 @@ The service is running on a node.js server, with React and Redux used for the we
   \- Recursive DBSCAN machine learning algorithm to reduce the complexity of the 3D spacetime variables.  
 4) Sjukstra routing  
   \- Customized Djikstra that takes into account cost-factors that are specific to electric buses  
-5) Telegram end user demo  
+5) Telegram (SujuBot) end user demo  
   \- Example of an end user UI. Helps envision how the service would look for an end user.  
    
 ##Accomplishments  
