@@ -10,6 +10,7 @@ import ReactNativeSlider from 'react-html5-slider'
 import color from '../utils/color'
 import Page from './Page'
 import style from '../styles/Map.scss'
+import {pointInPath} from '../utils/busssimu'
 
 import { Map, TileLayer, LayerGroup, Circle, Polyline } from 'react-leaflet';
 
@@ -58,7 +59,7 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
   }
 }
 
-const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation, setSliderValue, sliderValue }) => (
+const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation, setSliderValue, sliderValue, cluster_min_time, cluster_max_time }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button disabled={!datapoints} className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -81,9 +82,9 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
           className={style.slider}
           value={sliderValue}
           handleChange={setSliderValue}
-          step={10}
-          max={100}
-          min={0}/>
+          step={100}
+          max={cluster_max_time}
+          min={cluster_min_time}/>
       </div>
     )
       : ''
@@ -121,6 +122,15 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
               return (<Polyline positions={route.positions} key={route.id} color={getColor(route.cluster_id[0])} weight={2} smoothFactor={1} />)
             }
           }) : null}
+          { routes && routesEnabled ? routes.map(route => {
+            if (route.id != undefined && route.visible) {
+              const paluuarvo = pointInPath(sliderValue, route)
+              console.log(paluuarvo)
+              if (paluuarvo) {
+                return (<Circle center={paluuarvo} color={'#46ff05'} fillColor={'#2b986e'} radius={20} weight={3} fillOpacity={1} />)
+              }
+            }
+          }) : null}
         </LayerGroup>
       </Map>
       : 'Loading location'}
@@ -138,7 +148,9 @@ const mapStateToProps = (state) => ({
   userEnabled: state.preferences.layers.user,
   routesEnabled: state.preferences.layers.routes,
   routes: state.preferences.routes,
-  sliderValue: state.preferences.sliderValue
+  sliderValue: state.preferences.sliderValue,
+  cluster_min_time: state.clusters.cluster_min_time,
+  cluster_max_time: state.clusters.cluster_max_time
 })
 
 const mapDispatchToProps = (dispatch) => {

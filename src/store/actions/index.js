@@ -79,7 +79,7 @@ export const setActiveApp = (id) => ({
 
 export const setSliderValue = (e) => ({
   type: 'SET_SLIDER_VALUE',
-  value: e.target.value
+  value: Number(e.target.value)
 })
 
 export function loadAllDataPoints() {

@@ -9,7 +9,7 @@ const preferences = (state = {
   },
   activeApp: 'map',
   routes: [],
-  sliderValue: 15
+  sliderValue: 0
 }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_APP':

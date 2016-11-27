@@ -14,12 +14,16 @@ const cluster = (state, action) => {
 const clusters = (state = {
     datapoints: [],
     clusters: [],
-    clustered_datapoints: []
+    clustered_datapoints: [],
+    cluster_min_time: undefined,
+    cluster_max_time: undefined
   }, action) => {
   switch (action.type) {
     case 'ADD_CLUSTER':
       return {
         ...state,
+        cluster_min_time: 1480219176 - 3600, //(state.cluster_min_time === undefined || state.cluster_min_time > action.data.date) ? action.data.date : state.cluster_min_time,
+        cluster_max_time: 1480219176 + 3600, //(state.cluster_max_time === undefined || state.cluster_max_time < action.data.date) ? action.data.date : state.cluster_max_time,
         clusters: [
           ...state.clusters,
           cluster(undefined, action)

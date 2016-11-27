@@ -61,16 +61,15 @@
 }
 
 .bottombar {
+  left: 0;
   bottom: 0;
   height: 6rem;
   margin-bottom: 1.4rem;
   animation-name: from_bottom;
   animation-duration: 0.5s;
-}
 
-.slider {
-  * {
-    width: 20rem;
+  input {
+    width: 80%;
   }
 }
 
