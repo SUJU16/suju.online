@@ -42,7 +42,8 @@ export const addRoute = (route) => ({
     positions: route,
     visible: true,
     positions: route.route,
-    stops: route.stops
+    stops: route.stops,
+    cluster_id: route.cluster_id
   }
 })
 

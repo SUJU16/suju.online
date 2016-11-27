@@ -69,7 +69,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       <div className={style.verticalContainer + ' ' + style.topbar}>
         <div className={style.bar}>
           { routes.map(route => {
-            return (<button style={getRouteButtonStyle(route.id, route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}><div>{route.id}</div></button>)
+            return (<button style={getRouteButtonStyle(route.cluster_id[0], route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}><div>{route.id}</div></button>)
           }) }
         </div>
       </div>
@@ -118,7 +118,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
           ) : null}
           { routes && routesEnabled ? routes.map(route => {
             if (route.id != undefined && route.visible) {
-              return (<Polyline positions={route.positions} key={route.id} color={getRandomColor(route.id)} weight={2} smoothFactor={1} />)
+              return (<Polyline positions={route.positions} key={route.id} color={getColor(route.cluster_id[0])} weight={2} smoothFactor={1} />)
             }
           }) : null}
         </LayerGroup>
