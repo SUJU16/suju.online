@@ -5,6 +5,10 @@ import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
 import BusIcon from 'react-icons/lib/io/android-bus'
+import PlayIcon from 'react-icons/lib/io/play'
+import PauseIcon from 'react-icons/lib/io/pause'
+import StopIcon from 'react-icons/lib/io/stop'
+
 import ReactNativeSlider from 'react-html5-slider'
 
 import color from '../utils/color'
@@ -79,21 +83,25 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
     { routes && routesEnabled ? (
       <div className={style.verticalContainer + ' ' + style.bottombar}>
         <button onClick={startPlaying}>
-          Play
+          <PlayIcon size={24} />
         </button>
-        <button onClick={() => setSliderValue(cluster_min_time)}>
-          Stop
+        <button onClick={togglePause}>
+          <PauseIcon size={24} />
+        </button>
+        <button onClick={() => {
+              togglePause()
+              setSliderValue(cluster_min_time)
+            }
+          }>
+          <StopIcon size={24} />
         </button>
         <ReactNativeSlider
           className={style.slider}
           value={sliderValue}
           handleChange={setSliderValue}
-          step={100}
+          step={10}
           max={cluster_max_time}
           min={cluster_min_time}/>
-        <button onClick={togglePause}>
-          Pause
-        </button>
       </div>
     )
       : ''
@@ -134,7 +142,6 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
           { routes && routesEnabled ? routes.map(route => {
             if (route.id != undefined && route.visible) {
               const paluuarvo = pointInPath(sliderValue, route)
-              console.log(paluuarvo)
               if (paluuarvo) {
                 return (<Circle center={paluuarvo} color={'#46ff05'} fillColor={'#2b986e'} radius={20} weight={3} fillOpacity={1} />)
               }

@@ -62,11 +62,25 @@
 
 .bottombar {
   left: 0;
+  right: 0;
   bottom: 0;
-  height: 6rem;
   margin-bottom: 1.4rem;
   animation-name: from_bottom;
   animation-duration: 0.5s;
+  background-color: lighten($background, 4);
+  border: 2px solid lighten($background, 4);
+  // border-radius: 0.5rem;
+
+  button {
+    background-color: lighten($background, 4);
+    border: 2px solid lighten($background, 4);
+    cursor: pointer;
+    color: lighten($blueblack, 80);
+
+    &:hover {
+      color: lighten($blueblack, 20);
+    }
+  }
 
   input {
     width: 80%;
