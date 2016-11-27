@@ -38,10 +38,10 @@ const getRandomColor = (id) => {
 }
 
 const getRouteButtonStyle = (id, visible) => {
-  const colorString = visible ? color.getColorString(id, 1.0, 0.6) : '#656565'
+  const colorString = color.getColorString(id, 1.0, 0.6)
   return {
     color: colorString,
-    borderColor: colorString
+    borderColor: visible ? colorString : '#656565'
   }
 }
 

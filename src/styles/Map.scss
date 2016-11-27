@@ -115,12 +115,14 @@
   button {
     border: 2px solid lighten($background, 20);
     border-radius: 50%;
+    padding: 0.7rem;
     background-color: transparent;
     color: lighten($blueblack, 20);
-    padding: 0.5rem;
     margin: 0.3rem;
     font-size: 1rem;
     font-weight: 400;
+    cursor: pointer;
+    outline: none;
 
     div {
       display: inline-block;
