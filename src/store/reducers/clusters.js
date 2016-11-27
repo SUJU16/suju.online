@@ -22,12 +22,16 @@ const clusters = (state = {
     case 'ADD_CLUSTER':
       return {
         ...state,
-        cluster_min_time: 1480219176 - 3600, //(state.cluster_min_time === undefined || state.cluster_min_time > action.data.date) ? action.data.date : state.cluster_min_time,
-        cluster_max_time: 1480219176 + 3600, //(state.cluster_max_time === undefined || state.cluster_max_time < action.data.date) ? action.data.date : state.cluster_max_time,
         clusters: [
           ...state.clusters,
           cluster(undefined, action)
         ]
+      }
+    case 'SAVE_MIN_MAX':
+      return {
+        ...state,
+        cluster_min_time: action.min,
+        cluster_max_time: action.max
       }
     case 'ADD_CLUSTERED_DATAPOINT':
       return {

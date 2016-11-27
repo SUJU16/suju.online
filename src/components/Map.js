@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setLocation, setZoomLevel, toggleLayer, toggleRoute, uploadPoint, getLocation, setSliderValue } from '../store/actions'
+import { setLocation, setZoomLevel, toggleLayer, toggleRoute, uploadPoint, getLocation, setSliderValue, startPlaying, togglePause } from '../store/actions'
 import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
@@ -59,7 +59,7 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
   }
 }
 
-const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation, setSliderValue, sliderValue, cluster_min_time, cluster_max_time }) => (
+const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation, setSliderValue, sliderValue, cluster_min_time, cluster_max_time, startPlaying, togglePause }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button disabled={!datapoints} className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -78,6 +78,12 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
     }
     { routes && routesEnabled ? (
       <div className={style.verticalContainer + ' ' + style.bottombar}>
+        <button onClick={startPlaying}>
+          Play
+        </button>
+        <button onClick={() => setSliderValue(cluster_min_time)}>
+          Stop
+        </button>
         <ReactNativeSlider
           className={style.slider}
           value={sliderValue}
@@ -85,6 +91,9 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
           step={100}
           max={cluster_max_time}
           min={cluster_min_time}/>
+        <button onClick={togglePause}>
+          Pause
+        </button>
       </div>
     )
       : ''
@@ -161,6 +170,8 @@ const mapDispatchToProps = (dispatch) => {
     toggleRoute: (id) => dispatch(toggleRoute(id)),
     newPoint: (e) => dispatch(uploadPoint(e)),
     setSliderValue: (value) => dispatch(setSliderValue(value)),
+    startPlaying: () => dispatch(startPlaying()),
+    togglePause: () => dispatch(togglePause()),
     getAndSetLocation: () => {
       dispatch(toggleLayer('user'))
       dispatch(getLocation())
