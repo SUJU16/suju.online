@@ -88,7 +88,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
         <LayerGroup>
           <TileLayer
             className={style.tileLayer}
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
             />
           { (datapoints && peopleEnabled && !clustersEnabled) ? datapoints.map(point => {
