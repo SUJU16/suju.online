@@ -46,4 +46,4 @@ Our main challenges were parametrizing and developing algorithms to solve the in
 
 ##What's next
 Our project is left open ended. It could be taken towards multiple of development directions, but only time will tell. We hope that during the judging phase we will get inspiring suggestions or feedback on our project.
-
+  
