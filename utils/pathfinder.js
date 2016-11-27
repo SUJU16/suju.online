@@ -32,7 +32,15 @@ module.exports = {
     return new Promise( (resolve, reject) => {
       fetch(url, options)
       .then( (reqData) => reqData.json())
-      .then( (data) => resolve(data))
+      .then( (data) => resolve(
+        {
+          ...data,
+          date: {
+            start: a.date,
+            end: b.date
+          }
+        })
+      )
       .catch( (error) => reject(error))
     })
   }
