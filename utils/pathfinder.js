@@ -43,7 +43,8 @@ module.exports = {
           date: {
             start: a.date,
             end: b.date
-          }
+          },
+          cluster_id: a.cluster_id
         })
       )
       .catch( (error) => reject(error))
