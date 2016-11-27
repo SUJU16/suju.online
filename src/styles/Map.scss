@@ -69,10 +69,11 @@
   animation-duration: 0.5s;
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
-  padding-bottom: 1.2rem;
   // border-radius: 0.5rem;
 
   button {
+    line-height: 2.2rem;
+    font-size: 0.8rem;
     background-color: lighten($background, 4);
     border: 2px solid lighten($background, 4);
     cursor: pointer;
