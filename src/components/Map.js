@@ -103,7 +103,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
             <Circle center={location} color={'#2bcc8d'} fillColor={'#2b986e'} radius={10} weight={3} fillOpacity={1}/>
           ) : null}
           { routes && routesEnabled ? routes.map(route => {
-            if (route.id && route.visible) {
+            if (route.id != undefined && route.visible) {
               return (<Polyline positions={route.positions} key={route.id} color={getRandomColor(route.id)} weight={2} smoothFactor={1} />)
             }
           }) : null}
