@@ -1,5 +1,4 @@
 import polyline from 'polyline'
-import routes from './routes'
 
 export const readRoute = (raw) => {
   let fullRoute = []
@@ -8,9 +7,4 @@ export const readRoute = (raw) => {
     fullRoute = fullRoute.concat(route)
   })
   return fullRoute
-}
-
-export const readRoutes = () => {
-  console.log('getCoordinates')
-  return routes.map(list => readRoute(list[0]))
 }
