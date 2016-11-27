@@ -5,7 +5,7 @@ import Page from './Page'
 const SettingsPage = () => (
   <Page>
     <div>
-      "Settings"
+      "Settings :D"
     </div>
   </Page>
 )

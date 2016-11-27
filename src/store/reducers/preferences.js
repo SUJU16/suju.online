@@ -8,7 +8,9 @@ const preferences = (state = {
     'routes': false
   },
   activeApp: 'map',
-  routes: []
+  routes: [],
+  sliderValue: 0,
+  paused: false
 }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_APP':
@@ -32,6 +34,12 @@ const preferences = (state = {
           action.route
         ]
       }
+    case 'SET_SLIDER_VALUE': {
+      return {
+        ...state,
+        sliderValue: action.value
+      }
+    }
     case 'TOGGLE_ROUTE':
       return {
         ...state,
@@ -41,6 +49,11 @@ const preferences = (state = {
             visible: (route.id === action.id) ? !route.visible : route.visible
           }
         })
+      }
+    case 'TOGGLE_PAUSE':
+      return {
+        ...state,
+        paused: action.value === undefined ? !state.paused : action.value
       }
     case 'SET_ZOOM':
       return {

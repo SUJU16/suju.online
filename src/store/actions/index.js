@@ -4,6 +4,7 @@ import moment from 'moment'
 import { readRoute } from '../../utils'
 
 var nextRouteId = 0
+var interval;
 
 export const addCluster = (data) => ({
   type: 'ADD_CLUSTER',
@@ -18,6 +19,12 @@ export const addClusteredDataPoint = (data) => ({
 export const setLocation = (location) => ({
   type: 'SET_LOCATION',
   ...location
+})
+
+export const saveMinMax = (min, max) => ({
+  type: 'SAVE_MIN_MAX',
+  min,
+  max
 })
 
 export const setZoomLevel = (e) => ({
@@ -42,7 +49,8 @@ export const addRoute = (route) => ({
     positions: route,
     visible: true,
     positions: route.route,
-    stops: route.stops
+    stops: route.stops,
+    cluster_id: route.cluster_id
   }
 })
 
@@ -74,6 +82,16 @@ const uploadFailure = (err) => ({
 export const setActiveApp = (id) => ({
   type: 'SET_ACTIVE_APP',
   id
+})
+
+export const setSliderValue = (e) => ({
+  type: 'SET_SLIDER_VALUE',
+  value: Number(e.target ? e.target.value : e)
+})
+
+export const togglePause = (bool) => ({
+  type: 'TOGGLE_PAUSE',
+  value: bool
 })
 
 export function loadAllDataPoints() {
@@ -119,13 +137,38 @@ export function uploadPoint(e) {
   }
 }
 
+export function startPlaying() {
+  return (dispatch, getState) => {
+    dispatch(togglePause(false))
+    if (!interval) {
+      interval = setInterval(() => {
+        let { sliderValue, paused } = getState().preferences
+        let { cluster_min_time } = getState().clusters
+        if (sliderValue == 0) sliderValue = cluster_min_time
+        if (!paused) dispatch(setSliderValue(sliderValue + 10))
+      }, 700)
+    }
+  }
+}
+
 export function loadAllRoutes() {
   return dispatch => {
     fetchData('http://localhost:5000/api/cluster/splines')
     .then(routes => {
+      let minDate = undefined
+      let maxDate = undefined
       for (let i in routes) {
-        dispatch(addRoute(readRoute(routes[i])))
+        let route = readRoute(routes[i])
+        dispatch(addRoute(route))
+        route.stops.forEach(stop => {
+      		minDate = (minDate === undefined || stop.date.start < minDate) ? stop.date.start : minDate
+      		maxDate = (maxDate === undefined || stop.date.start > maxDate) ? stop.date.start : maxDate
+      	})
       }
+      console.log('henri on homo')
+      minDate -= 30
+      maxDate += 30
+      dispatch(saveMinMax(minDate, maxDate))
     })
   }
 }

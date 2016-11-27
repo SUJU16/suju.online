@@ -14,7 +14,9 @@ const cluster = (state, action) => {
 const clusters = (state = {
     datapoints: [],
     clusters: [],
-    clustered_datapoints: []
+    clustered_datapoints: [],
+    cluster_min_time: undefined,
+    cluster_max_time: undefined
   }, action) => {
   switch (action.type) {
     case 'ADD_CLUSTER':
@@ -24,6 +26,12 @@ const clusters = (state = {
           ...state.clusters,
           cluster(undefined, action)
         ]
+      }
+    case 'SAVE_MIN_MAX':
+      return {
+        ...state,
+        cluster_min_time: action.min,
+        cluster_max_time: action.max
       }
     case 'ADD_CLUSTERED_DATAPOINT':
       return {

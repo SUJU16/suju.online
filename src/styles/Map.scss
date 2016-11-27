@@ -7,8 +7,8 @@
 }
 
 .map {
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
 }
 
 .title {
@@ -16,15 +16,19 @@
 }
 
 .middle {
-  @media(max-width: $break-small) {
-    bottom: 14rem;
-  }
-  @media(min-width: $break-large) {
-    top: 50vh;
-  }
+  left: 0;
+  -webkit-transform: scaleX(-1); /* Chrome, Safari, Opera */
+  transform: scaleX(-1);
+  // @media(max-width: $break-small) {
+  //   bottom: 14rem;
+  // }
+  // @media(min-width: $break-large) {
+  top: 8rem;
+  // }
 }
 
-.topbarContainer {
+.verticalContainer {
+  left: 0;
   width: 100%;
   position: absolute;
   z-index: 999;
@@ -32,22 +36,72 @@
   flex-direction: row;
   justify-content: center;
   padding: 0.1rem;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-@keyframes example {
+@keyframes from_top {
     0%   {opacity: 0.0; margin-top: -5rem;}
     30%   {opacity: 0.0}
     100% {opacity: 1.0; margin-top: 1.4rem;}
 }
 
+@keyframes from_bottom {
+    0%   {opacity: 0.0; margin-bottom: -5rem;}
+    30%   {opacity: 0.0}
+    100% {opacity: 1.0; margin-bottom: 1.4rem;}
+}
+
 .topbar {
+  top: 0;
   margin-top: 1.4rem;
+  animation-name: from_top;
+  animation-duration: 0.5s;
+}
+
+.bottombar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 1.4rem;
+  animation-name: from_bottom;
+  animation-duration: 0.5s;
+  background-color: lighten($background, 4);
+  border: 2px solid lighten($background, 4);
+  // border-radius: 0.5rem;
+
+  button {
+    background-color: lighten($background, 4);
+    border: 2px solid lighten($background, 4);
+    cursor: pointer;
+    color: lighten($blueblack, 80);
+
+    &:hover {
+      color: lighten($blueblack, 20);
+    }
+  }
+
+  input {
+    width: 80%;
+  }
+}
+
+.bar {
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
   border-radius: 0.5rem;
-  overflow: hidden;
-  animation-name: example;
-  animation-duration: 0.5s;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+
+  @media(max-width: $break-small) {
+    max-width: 64%;
+  }
+  @media(min-width: $break-large) {
+    max-width: 50rem;
+  }
 
   button {
     border: 2px solid lighten($background, 20);
@@ -67,12 +121,15 @@
 }
 
 .bottom {
-  @media(max-width: $break-small) {
-    bottom: 10rem;
-  }
-  @media(min-width: $break-large) {
-    bottom: 5vh;
-  }
+  left: 0;
+  -webkit-transform: scaleX(-1); /* Chrome, Safari, Opera */
+  transform: scaleX(-1);
+  // @media(max-width: $break-small) {
+  //   bottom: 10rem;
+  // }
+  // @media(min-width: $break-large) {
+  top: 18rem;
+  // }
 }
 
 .sidebar {
@@ -80,7 +137,6 @@
   z-index: 999;
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
-  background-color: transparent;
   // opacity: 0.8;
   display: flex;
   flex-direction: column;
