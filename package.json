@@ -46,6 +46,7 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-html5-slider": "^0.1.2",
     "react-icons": "^2.2.1",
     "react-leaflet": "^1.0.0",
     "react-redux": "^4.4.6",

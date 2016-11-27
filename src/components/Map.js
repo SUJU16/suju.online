@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setLocation, setZoomLevel, toggleLayer, toggleRoute, uploadPoint, getLocation } from '../store/actions'
+import { setLocation, setZoomLevel, toggleLayer, toggleRoute, uploadPoint, getLocation, setSliderValue } from '../store/actions'
 import PeopleIcon from 'react-icons/lib/io/ios-body'
 import ClusterIcon from 'react-icons/lib/io/ios-circle-filled'
 import NavIcon from 'react-icons/lib/io/ios-navigate-outline'
 import BusIcon from 'react-icons/lib/io/android-bus'
+import ReactNativeSlider from 'react-html5-slider'
 
 import color from '../utils/color'
 import Page from './Page'
@@ -57,7 +58,7 @@ const renderClusters = (clusters, clustered_datapoints, clustersEnabled) => {
   }
 }
 
-const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation }) => (
+const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLevel, peopleEnabled, clustersEnabled, userEnabled, routesEnabled, routes, setLocation, setZoomLevel, toggleLayer, toggleRoute, newPoint, getAndSetLocation, setSliderValue, sliderValue }) => (
   <div className={style.container}>
     <div className={style.sidebar + ' ' + style.middle}>
       <button disabled={!datapoints} className={peopleEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "people")}><PeopleIcon size={24}/></button>
@@ -65,13 +66,26 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
       <button disabled={!routes} className={routesEnabled ? style.buttonEnabled : ''} onClick={toggleLayer.bind(this, "routes")}><BusIcon size={24}/></button>
     </div>
     { routes && routesEnabled ?
-      <div className={style.topbarContainer}>
-        <div className={style.topbar}>
+      <div className={style.verticalContainer + ' ' + style.topbar}>
+        <div className={style.bar}>
           { routes.map(route => {
             return (<button style={getRouteButtonStyle(route.id, route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}><div>{route.id}</div></button>)
           }) }
         </div>
       </div>
+      : ''
+    }
+    { routes && routesEnabled ? (
+      <div className={style.verticalContainer + ' ' + style.bottombar}>
+        <ReactNativeSlider
+          className={style.slider}
+          value={sliderValue}
+          handleChange={setSliderValue}
+          step={10}
+          max={100}
+          min={0}/>
+      </div>
+    )
       : ''
     }
     <div className={style.sidebar + ' ' + style.bottom}>
@@ -123,7 +137,8 @@ const mapStateToProps = (state) => ({
   clustersEnabled: state.preferences.layers.clusters,
   userEnabled: state.preferences.layers.user,
   routesEnabled: state.preferences.layers.routes,
-  routes: state.preferences.routes
+  routes: state.preferences.routes,
+  sliderValue: state.preferences.sliderValue
 })
 
 const mapDispatchToProps = (dispatch) => {
@@ -133,6 +148,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleLayer: (id) => dispatch(toggleLayer(id)),
     toggleRoute: (id) => dispatch(toggleRoute(id)),
     newPoint: (e) => dispatch(uploadPoint(e)),
+    setSliderValue: (value) => dispatch(setSliderValue(value)),
     getAndSetLocation: () => {
       dispatch(toggleLayer('user'))
       dispatch(getLocation())

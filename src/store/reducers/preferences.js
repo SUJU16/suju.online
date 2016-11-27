@@ -8,7 +8,8 @@ const preferences = (state = {
     'routes': false
   },
   activeApp: 'map',
-  routes: []
+  routes: [],
+  sliderValue: 15
 }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_APP':
@@ -32,6 +33,12 @@ const preferences = (state = {
           action.route
         ]
       }
+    case 'SET_SLIDER_VALUE': {
+      return {
+        ...state,
+        sliderValue: action.value
+      }
+    }
     case 'TOGGLE_ROUTE':
       return {
         ...state,

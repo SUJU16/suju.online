@@ -27,7 +27,7 @@
   // }
 }
 
-.topbarContainer {
+.verticalContainer {
   left: 0;
   width: 100%;
   position: absolute;
@@ -41,19 +41,43 @@
   }
 }
 
-@keyframes example {
+@keyframes from_top {
     0%   {opacity: 0.0; margin-top: -5rem;}
     30%   {opacity: 0.0}
     100% {opacity: 1.0; margin-top: 1.4rem;}
 }
 
+@keyframes from_bottom {
+    0%   {opacity: 0.0; margin-bottom: -5rem;}
+    30%   {opacity: 0.0}
+    100% {opacity: 1.0; margin-bottom: 1.4rem;}
+}
+
 .topbar {
+  top: 0;
   margin-top: 1.4rem;
+  animation-name: from_top;
+  animation-duration: 0.5s;
+}
+
+.bottombar {
+  bottom: 0;
+  height: 6rem;
+  margin-bottom: 1.4rem;
+  animation-name: from_bottom;
+  animation-duration: 0.5s;
+}
+
+.slider {
+  * {
+    width: 20rem;
+  }
+}
+
+.bar {
   background-color: lighten($background, 4);
   border: 2px solid lighten($background, 4);
   border-radius: 0.5rem;
-  animation-name: example;
-  animation-duration: 0.5s;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -65,7 +89,6 @@
   @media(min-width: $break-large) {
     max-width: 50rem;
   }
-
 
   button {
     border: 2px solid lighten($background, 20);

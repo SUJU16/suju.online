@@ -76,6 +76,11 @@ export const setActiveApp = (id) => ({
   id
 })
 
+export const setSliderValue = (e) => ({
+  type: 'SET_SLIDER_VALUE',
+  value: e.target.value
+})
+
 export function loadAllDataPoints() {
   return dispatch => {
     fetchData('http://localhost:5000/api/database')
