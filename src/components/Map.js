@@ -8,6 +8,10 @@ import BusIcon from 'react-icons/lib/io/android-bus'
 import PlayIcon from 'react-icons/lib/io/play'
 import PauseIcon from 'react-icons/lib/io/pause'
 import StopIcon from 'react-icons/lib/io/stop'
+import TimeIcon from 'react-icons/lib/io/ios-time'
+import sujulogo from '../assets/suju_wh.png'
+
+import moment from 'moment'
 
 import ReactNativeSlider from 'react-html5-slider'
 
@@ -21,19 +25,11 @@ import { Map, TileLayer, LayerGroup, Circle, Polyline, Marker, Icon } from 'reac
 
 var colors = {}
 
-const getColor = (id/*, size = undefined*/) => {
-  // if (!colors[id] && size) {
-  //   colors[id] = `rgb(${Math.floor(size)}, ${Math.floor(0)}, ${Math.floor(255 - size)})`
-  // }
-  // return colors[id]
+const getColor = (id) => {
   return color.getColorString(id, 1.0, 0.6)
 }
 
 const getRandomColor = (id) => {
-  // if (!colors[id+'lol']) {
-  //   colors[id+'lol'] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
-  // }
-  // return colors[id+'lol']
   return color.getColorString(id, 1.0, 0.6)
 }
 
@@ -73,36 +69,43 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
     </div>
     { routes && routesEnabled ?
       <div className={style.verticalContainer + ' ' + style.topbar}>
-        <div className={style.bar}>
+        <div className={style.routeBar}>
           { routes.map(route => {
-            return (<button style={getRouteButtonStyle(route.cluster_id[0], route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}><div>{route.id}</div></button>)
+            return (<button style={getRouteButtonStyle(route.cluster_id[0], route.visible)} onClick={toggleRoute.bind(this, route.id)} key={route.id}>{<div>{route.id}</div>}</button>)
           }) }
         </div>
       </div>
       : ''
     }
     { routes && routesEnabled ? (
-      <div className={style.verticalContainer + ' ' + style.bottombar}>
-        <button onClick={startPlaying}>
-          START
-        </button>
-        <button onClick={togglePause}>
-          PAUSE
-        </button>
-        <button onClick={() => {
-              togglePause()
-              setSliderValue(cluster_min_time)
-            }
-          }>
-          STOP
-        </button>
-        <ReactNativeSlider
-          className={style.slider}
-          value={sliderValue}
-          handleChange={setSliderValue}
-          step={10}
-          max={cluster_max_time}
-          min={cluster_min_time}/>
+      <div className={style.verticalContainer + ' ' + style.simulatorBottomBar}>
+        <div className={style.simulatorControls}>
+          <button onClick={startPlaying}>
+            START
+          </button>
+          <button onClick={togglePause}>
+            PAUSE
+          </button>
+          <button onClick={() => {
+                togglePause()
+                setSliderValue(cluster_min_time)
+              }
+            }>
+            STOP
+          </button>
+        </div>
+        <div className={style.simulatorInfo}>
+          <div className={style.simulatorText}>
+            <div><TimeIcon size={16} />{sliderValue ? moment.unix(sliderValue).format('HH:mm:ss') : '00:00:00'}</div>
+          </div>
+          <ReactNativeSlider
+            className={style.slider}
+            value={sliderValue}
+            handleChange={setSliderValue}
+            step={10}
+            max={cluster_max_time}
+            min={cluster_min_time}/>
+        </div>
       </div>
     )
       : ''
@@ -114,13 +117,14 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
     </div>
     {location ?
       <Map className={style.map}
+        attributionControl={false}
         center={location}
         zoom={zoomLevel}
-        onZoom={setZoomLevel}>
+        onZoom={setZoomLevel}
+        onClick={newPoint}>
         <LayerGroup>
           <TileLayer
             className={style.tileLayer}
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
             />
           { (datapoints && peopleEnabled && !clustersEnabled) ? datapoints.map(point => {
@@ -143,7 +147,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
             if (route.id != undefined && route.visible) {
               const paluuarvo = pointInPath(sliderValue, route)
               if (paluuarvo) {
-                return (<Circle center={paluuarvo} color={'#46ff05'} fillColor={'#2b986e'} radius={20} weight={3} fillOpacity={1} />)
+                return (<Circle key={route.id} center={paluuarvo} color={'#46ff05'} fillColor={'#2b986e'} radius={20} weight={3} fillOpacity={1} />)
               }
             }
           }) : null}
@@ -154,6 +158,7 @@ const MapView = ({ datapoints, clusters, clustered_datapoints, location, zoomLev
         </LayerGroup>
       </Map>
       : 'Loading location'}
+      <a className={style.logoLink} href="https://devpost.com/software/suju" target="_blank"><img src={sujulogo}></img></a>
   </div>
 )
 

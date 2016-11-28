@@ -6,6 +6,20 @@
   flex-direction: row-reverse;
 }
 
+.logoLink {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  img {
+    margin: 0.5rem;
+    width: 4rem;
+    @media(min-width: $break-large) {
+      width: 6rem;
+    }
+  }
+}
+
 .map {
   min-height: 100%;
   min-width: 100%;
@@ -27,15 +41,85 @@
   // }
 }
 
+.simulatorBottomBar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0rem 1rem;
+  animation-name: from_bottom;
+  animation-duration: 0.5s;
+  background-color: lighten($background, 4);
+  border: 2px solid lighten($background, 4);
+
+  @media(max-width: $break-small) {
+    * {
+      font-size: 1rem;
+    }
+    input {
+      display: none;
+    }
+  }
+}
+
+.simulatorControls {
+  display: flex;
+  flex-direction: row;
+  font-weight: 600;
+  button {
+    // padding: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: lighten($background, 4);
+    border: 2px solid lighten($background, 4);
+    cursor: pointer;
+    color: lighten($blueblack, 80);
+    &:hover {
+      color: lighten($blueblack, 20);
+    }
+  }
+}
+
+.simulatorInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0.5rem 0;
+  margin-left: 0.5rem;
+
+  input {
+    margin-top: 0.5rem;
+    background-color: darken($background, 6);
+  }
+}
+
+.simulatorText {
+  display: flex;
+  // padding: 0.7rem;
+  background-color: darken($background, 6);
+  border-radius: 0.2rem;
+  align-items: center;
+  flex-direction: row;
+
+  div {
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+
+    * {
+      margin: 0.2rem 0.5rem;
+    }
+  }
+}
+
 .verticalContainer {
   left: 0;
-  width: 100%;
+  right: 0;
+  max-width: 100%;
   position: absolute;
   z-index: 999;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 0.1rem;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -60,46 +144,7 @@
   animation-duration: 0.5s;
 }
 
-.bottombar {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  // margin-bottom: 1.4rem;
-  animation-name: from_bottom;
-  animation-duration: 0.5s;
-  background-color: lighten($background, 4);
-  border: 2px solid lighten($background, 4);
-  // border-radius: 0.5rem;
-
-  button {
-    line-height: 2.2rem;
-    font-size: 0.8rem;
-    background-color: lighten($background, 4);
-    border: 2px solid lighten($background, 4);
-    cursor: pointer;
-    color: lighten($blueblack, 80);
-
-    &:hover {
-      color: lighten($blueblack, 20);
-    }
-  }
-
-  @media(max-width: $break-small) {
-    * {
-      font-size: 1rem;
-    }
-
-    input {
-      display: none;
-    }
-  }
-
-  input {
-    width: 80%;
-  }
-}
-
-.bar {
+.routeBar {
   border-radius: 0.2rem;
   display: flex;
   flex-direction: row;
@@ -115,13 +160,12 @@
 
   button {
     border: 2px solid lighten($background, 20);
-    border-radius: 50%;
-    padding: 0.7rem;
+    border-radius: 2rem;
+    padding: 0.4rem;
     background-color: transparent;
-    color: lighten($blueblack, 20);
     margin: 0.3rem;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 600;
     cursor: pointer;
     outline: none;
 

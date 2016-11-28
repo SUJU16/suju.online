@@ -107,7 +107,7 @@ export function loadAllDataPoints() {
 
 export function getLocation() {
   return dispatch => {
-    navigator.geolocation.watchPosition(pos => {
+    navigator.geolocation.getCurrentPosition(pos => {
       dispatch(setLocation({ltd: pos.coords.latitude, lon: pos.coords.longitude}),
       { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true })
     })
@@ -165,7 +165,6 @@ export function loadAllRoutes() {
       		maxDate = (maxDate === undefined || stop.date.start > maxDate) ? stop.date.start : maxDate
       	})
       }
-      console.log('henri on homo')
       minDate -= 30
       maxDate += 30
       dispatch(saveMinMax(minDate, maxDate))
