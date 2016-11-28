@@ -27,8 +27,8 @@ export function pointInPath(t, route) {
 					let f = total + length - s
 
 					return [
-						stop.points[j-1][0] + ( stop.points[j][0] - stop.points[j-1][0] ) * ( f/length ), 
-						stop.points[j-1][1] + ( stop.points[j][1] - stop.points[j-1][1] ) * ( f/length ), 
+						stop.points[j-1][0] + ( stop.points[j][0] - stop.points[j-1][0] ) * ( 1-f/length ), 
+						stop.points[j-1][1] + ( stop.points[j][1] - stop.points[j-1][1] ) * ( 1-f/length ), 
 					]
 				}
 
